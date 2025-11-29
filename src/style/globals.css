@@ -76,6 +76,8 @@ a:not([class]),
     position: relative;
     transition: all 0.3s ease;
     font-weight: bold;
+    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 a:not([class]):hover,
@@ -106,6 +108,51 @@ a:not([class]):hover::after,
 .prose-container a:hover::after,
 .footer-text a:hover::after {
     width: 100%;
+}
+
+/* --- 全局滚动条样式 (Tactical Scrollbar) --- */
+
+/* 1. Firefox 适配 */
+html {
+    scrollbar-width: thin; /* 细滚动条 */
+    scrollbar-color: var(--border-dim) var(--bg-deep); /* 滑块颜色 轨道颜色 */
+}
+
+/* 2. WebKit (Chrome, Edge, Safari) 适配 */
+
+/* 滚动条整体 */
+::-webkit-scrollbar {
+    width: 6px;  /* 纵向滚动条宽度 */
+    height: 6px; /* 横向滚动条高度 */
+}
+
+/* 滚动条轨道 (Track) */
+::-webkit-scrollbar-track {
+    background: var(--bg-deep); /* 与背景融合 */
+    border-left: 1px solid var(--border-dim); /* 左侧加一条细微分割线 */
+}
+
+/* 滚动条滑块 (Thumb) - 默认状态 */
+::-webkit-scrollbar-thumb {
+    background: #333; /* 深灰色，低调 */
+    border-radius: 0; /* 战术风格：直角，拒绝圆角 */
+    transition: background 0.3s;
+}
+
+/* 滚动条滑块 - 鼠标悬停 (Hover) */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-orange); /* 变亮橙色 */
+    box-shadow: 0 0 10px var(--accent-orange); /* 增加科技发光感 */
+}
+
+/* 滚动条滑块 - 激活/点击 (Active) */
+::-webkit-scrollbar-thumb:active {
+    background: var(--accent-red); /* 点击时变红，增加反馈 */
+}
+
+/* 横纵滚动条交界处的角落 */
+::-webkit-scrollbar-corner {
+    background: var(--bg-deep);
 }
 
 /* --- PE --- */

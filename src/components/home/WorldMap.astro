@@ -145,26 +145,26 @@ const locationMap = locations.reduce((acc, loc) => {
         /* 2. 弹窗面板：限制高度 + 滚动条 */
         .map-data-overlay {
             width: 100%;
-            height: auto;        /* 高度由内容决定 */
-            max-height: 60%;     /* 关键：最多只占地图高度的 60%，留出 40% 看地图 */
-            min-height: auto;    /* 取消最小高度限制 */
-            
-            top: auto;           /* 取消顶部定位 */
-            bottom: 0;           /* 紧贴底部 */
+            height: auto;        
+            max-height: 60%;     
+            min-height: auto;    
+            top: auto;           
+            bottom: 0;           
             right: 0;
             left: 0;
             
             border-left: none;
-            border-top: 3px solid var(--accent-orange); /* 改为顶部边框 */
+            border-top: 3px solid var(--accent-orange); 
             
             transform: translateY(100%);
             
             /* 关键：内容过多时显示滚动条 */
-            overflow-y: auto; 
-            
-            padding: 25px 20px; /* 增加一点内边距 */
-            background: rgba(10, 10, 15, 0.98); /* 加深背景色防止透视干扰 */
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.8); /* 顶部阴影 */
+            overflow-y: scroll; 
+            -webkit-overflow-scrolling: touch; 
+            overscroll-behavior: contain; 
+            padding: 25px 20px;
+            background: rgba(10, 10, 15, 0.98);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
         }
 
         .map-data-overlay.active {

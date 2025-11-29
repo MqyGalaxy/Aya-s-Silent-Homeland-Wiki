@@ -1,9 +1,6 @@
 ---
-// 1. 引入数据
 import { characters } from '../../data/characters';
 
-// 2. 将数组转换为以 id 为 key 的对象，方便 JS 通过 ID 查找
-// 结果示例: { 'aya': { name: '...', ... }, 'momiji': { ... } }
 const charMap = characters.reduce((acc, char) => {
     acc[char.id] = char;
     return acc;
@@ -13,42 +10,51 @@ const charMap = characters.reduce((acc, char) => {
 <div id="downloadModal" class="modal-overlay" onclick="closeModal('downloadModal')">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div class="modal-close" onclick="closeModal('downloadModal')">×</div>
-        <h2 class="modal-title">游戏下载</h2>
-        <div class="modal-subtitle">DOWNLOAD // WINDOWS V1.0.0</div>
-        <div class="dl-grid">
-            <a href="https://pan.baidu.com/s/1gWe0yvx33CDnO16yH0AYxw?pwd=fhf6">
-                <div class="dl-option">
-                    <div class="dl-icon">❖</div>
-                    <div style="font-weight:bold; color:#fff">百度云盘</div>
-                    <div style="font-size:0.8rem; color:#666">提取码: fhf6 / 13.5GB</div>
-                </div>
-            </a>
-            <a href="https://yun.139.com/shareweb/#/w/i/2qie09inzVcip">
-                <div class="dl-option">
-                    <div class="dl-icon">❖</div>
-                    <div style="font-weight:bold; color:#fff">移动云盘</div>
-                    <div style="font-size:0.8rem; color:#666">提取码：df68 / 13.5GB</div>
-                </div>
-            </a>
-            <a href="https://mega.nz/folder/bgASlA7L#SBpNbdnBRLsbg3KnlSzeTg">
-                <div class="dl-option">
-                    <div class="dl-icon">❖</div>
-                    <div style="font-weight:bold; color:#fff">MEGA盘</div>
-                    <div style="font-size:0.8rem; color:#666">--- / 13.5GB</div>
-                </div>
-            </a>
+        
+        <div class="modal-scroll-view">
+            <h2 class="modal-title">游戏下载</h2>
+            <div class="modal-subtitle">DOWNLOAD // WINDOWS V1.0.0</div>
+            <div class="dl-grid">
+                <a href="https://pan.baidu.com/s/1gWe0yvx33CDnO16yH0AYxw?pwd=fhf6" >
+                    <div class="dl-option">
+                        <div class="dl-icon">❖</div>
+                        <div style="font-weight:bold; color:#fff">百度云盘</div>
+                        <div style="font-size:0.8rem; color:#666">提取码: fhf6 / 13.5GB</div>
+                    </div>
+                </a>
+                <a href="https://yun.139.com/shareweb/#/w/i/2qie09inzVcip" >
+                    <div class="dl-option">
+                        <div class="dl-icon">❖</div>
+                        <div style="font-weight:bold; color:#fff">移动网盘</div>
+                        <div style="font-size:0.8rem; color:#666">提取码: df68 / 13.5GB</div>
+                    </div>
+                </a>
+                <a href="https://mega.nz/folder/bgASlA7L#SBpNbdnBRLsbg3KnlSzeTg" >
+                    <div class="dl-option">
+                        <div class="dl-icon">❖</div>
+                        <div style="font-weight:bold; color:#fff">MEGA盘</div>
+                        <div style="font-size:0.8rem; color:#666">--- / 13.5GB</div>
+                    </div>
+                </a>
             </div>
-        <div style="margin-top:20px; font-size:0.8rem; color:#555; text-align:center;">* 仅支持Windows PC平台下载游玩。</div>
+            <div style="margin-top:20px; font-size:0.8rem; color:#555; text-align:center;">
+                * 仅支持Windows PC平台下载游玩。
+            </div>
+        </div>
     </div>
 </div>
 
 <div id="videoModal" class="modal-overlay" onclick="closeModal('videoModal')">
     <div class="modal-box" style="width: 900px;" onclick="event.stopPropagation()">
         <div class="modal-close" onclick="closeModal('videoModal')">×</div>
-        <h2 class="modal-title">正式发布PV</h2>
-        <div class="modal-subtitle">OFFICIAL PROMOTION VIDEO</div>
-        <div class="video-container">
-            <iframe id="biliFrame" src="" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        
+        <div class="modal-scroll-view">
+            <h2 class="modal-title">TRAILER</h2>
+            <div class="modal-subtitle">OFFICIAL PROMOTION VIDEO</div>
+            
+            <div class="video-container">
+                <iframe id="biliFrame" src="" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+            </div>
         </div>
     </div>
 </div>
@@ -56,39 +62,43 @@ const charMap = characters.reduce((acc, char) => {
 <div id="charModal" class="modal-overlay" onclick="closeCharModal()">
     <div class="modal-box" style="width: 1000px;" onclick="event.stopPropagation()">
         <div class="modal-close" onclick="closeCharModal()">×</div>
-        <div class="char-modal-layout">
-            <div class="char-modal-img">
-                <img id="cm-img" src="" alt="Character Art">
-                <div class="grid-overlay"></div> </div>
-            <div class="char-modal-info">
-                <h2 id="cm-name" class="modal-title" style="font-size:2.5rem; font-style:italic;">NAME</h2>
-                <div class="modal-subtitle">
-                    <span id="cm-name-en">ENGLISH NAME</span>
-                    <span style="float:right; color:var(--text-white);" id="cm-role">ROLE</span>
+        
+        <div class="modal-scroll-view">
+            <div class="char-modal-layout">
+                <div class="char-modal-img">
+                    <img id="cm-img" src="" alt="Character Art">
+                    <div class="grid-overlay"></div> 
                 </div>
-                
-                <p id="cm-desc" style="color:var(--text-main); line-height:1.6; margin-bottom:30px; min-height:60px;">Description...</p>
+                <div class="char-modal-info">
+                    <h2 id="cm-name" class="modal-title" style="font-size:2.5rem; font-style:italic;">NAME</h2>
+                    <div class="modal-subtitle">
+                        <span id="cm-name-en">ENGLISH NAME</span>
+                        <span style="float:right; color:var(--text-white);" id="cm-role">ROLE</span>
+                    </div>
+                    
+                    <p id="cm-desc" style="color:var(--text-main); line-height:1.6; margin-bottom:30px; min-height:60px;">Description...</p>
 
-                <div class="char-stat-row">
-                    <div class="char-stat-label"><span>火力 (FIREPOWER)</span> <span id="stat-fire-val">A</span></div>
-                    <div class="char-stat-bar"><div id="stat-fire" class="char-stat-fill"></div></div>
-                </div>
-                <div class="char-stat-row">
-                    <div class="char-stat-label"><span>机动 (MOBILITY)</span> <span id="stat-mob-val">S</span></div>
-                    <div class="char-stat-bar"><div id="stat-mob" class="char-stat-fill"></div></div>
-                </div>
-                <div class="char-stat-row">
-                    <div class="char-stat-label"><span>防御 (DEFENSE)</span> <span id="stat-def-val">C</span></div>
-                    <div class="char-stat-bar"><div id="stat-def" class="char-stat-fill"></div></div>
-                </div>
-                <div class="char-stat-row">
-                    <div class="char-stat-label"><span>战术 (TACTICS)</span> <span id="stat-tac-val">B</span></div>
-                    <div class="char-stat-bar"><div id="stat-tac" class="char-stat-fill"></div></div>
-                </div>
+                    <div class="char-stat-row">
+                        <div class="char-stat-label"><span>火力 (FIREPOWER)</span> <span id="stat-fire-val">A</span></div>
+                        <div class="char-stat-bar"><div id="stat-fire" class="char-stat-fill"></div></div>
+                    </div>
+                    <div class="char-stat-row">
+                        <div class="char-stat-label"><span>机动 (MOBILITY)</span> <span id="stat-mob-val">S</span></div>
+                        <div class="char-stat-bar"><div id="stat-mob" class="char-stat-fill"></div></div>
+                    </div>
+                    <div class="char-stat-row">
+                        <div class="char-stat-label"><span>防御 (DEFENSE)</span> <span id="stat-def-val">C</span></div>
+                        <div class="char-stat-bar"><div id="stat-def" class="char-stat-fill"></div></div>
+                    </div>
+                    <div class="char-stat-row">
+                        <div class="char-stat-label"><span>战术 (TACTICS)</span> <span id="stat-tac-val">B</span></div>
+                        <div class="char-stat-bar"><div id="stat-tac" class="char-stat-fill"></div></div>
+                    </div>
 
-                <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-dim);">
-                    <div class="char-stat-label">WEAPON PREFER</div>
-                    <div id="cm-weapon" style="font-size:1.2rem; font-weight:bold; color:var(--accent-orange);">ASSAULT RIFLE</div>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-dim);">
+                        <div class="char-stat-label">WEAPON CONFIG</div>
+                        <div id="cm-weapon" style="font-size:1.2rem; font-weight:bold; color:var(--accent-orange);">ASSAULT RIFLE</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,66 +106,88 @@ const charMap = characters.reduce((acc, char) => {
 </div>
 
 <style>
-    /* CSS 样式保持不变，直接复制之前的即可 */
+    /* 遮罩层 */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--bg-panel); border: 2px solid var(--border-dim); padding: 40px; width: 800px; max-width: 90%; position: relative; transform: translateY(50px); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    
+    /* --- Modal Box (外壳：固定不动) --- */
+    .modal-box { 
+        background: var(--bg-panel); 
+        border: 2px solid var(--border-dim); 
+        width: 800px; max-width: 90%; 
+        /* 限制最大高度，确保在小屏幕上不会溢出视口 */
+        max-height: 90vh; 
+        display: flex; flex-direction: column; /* 关键：让内部 scroll-view 撑满 */
+        position: relative; 
+        transform: translateY(50px); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        /* 关键：Padding 设为 0，交给 scroll-view 处理 */
+        padding: 0; 
+        overflow: hidden; /* 防止装饰溢出 */
+    }
     .modal-overlay.active .modal-box { transform: translateY(0); }
-    .modal-box::before { content:''; position:absolute; top:0; left:0; width:20px; height:20px; border-top: 3px solid var(--accent-orange); border-left: 3px solid var(--accent-orange); }
-    .modal-box::after { content:''; position:absolute; bottom:0; right:0; width:20px; height:20px; border-bottom: 3px solid var(--accent-orange); border-right: 3px solid var(--accent-orange); }
-    .modal-close { position: absolute; top: 10px; right: 20px; font-size: 2rem; color: var(--text-sub); cursor: pointer; transition: 0.2s; font-family: var(--font-header); }
+
+    /* 夹角装饰 (固定在 Box 上) */
+    .modal-box::before { content:''; position:absolute; top:0; left:0; width:20px; height:20px; border-top: 3px solid var(--accent-orange); border-left: 3px solid var(--accent-orange); z-index: 2; pointer-events: none; }
+    .modal-box::after { content:''; position:absolute; bottom:0; right:0; width:20px; height:20px; border-bottom: 3px solid var(--accent-orange); border-right: 3px solid var(--accent-orange); z-index: 2; pointer-events: none; }
+    
+    /* 关闭按钮 (固定在 Box 上) */
+    .modal-close { 
+        position: absolute; top: 10px; right: 20px; 
+        font-size: 2rem; color: var(--text-sub); cursor: pointer; transition: 0.2s; font-family: var(--font-header); 
+        z-index: 10; /* 保证在最上层 */
+        background: rgba(0,0,0,0.5); /* 稍微加点背景防遮挡 */
+        padding: 0 10px; border-radius: 4px;
+    }
     .modal-close:hover { color: var(--accent-red); }
+
+    /* --- Scroll View (内胆：负责滚动) --- */
+    .modal-scroll-view {
+        padding: 40px; /* 原本在 box 上的 padding 移到这里 */
+        overflow-y: auto; /* 开启滚动 */
+        height: 100%;
+        width: 100%;
+        /* 移动端平滑滚动 */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+
+    /* 内部内容样式保持不变 */
     .modal-title { font-family: var(--font-header); font-size: 2rem; margin-bottom: 10px; color: var(--text-main); }
     .modal-subtitle { color: var(--accent-orange); font-family: var(--font-tech); margin-bottom: 30px; border-bottom: 1px dashed var(--border-dim); padding-bottom: 10px; }
-    .grid-overlay { position: absolute; inset: 0; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); pointer-events: none; z-index: 1; }
+
+    /* DL Grid */
     .dl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .dl-option { border: 1px solid var(--border-dim); padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
     .dl-option:hover { border-color: var(--accent-orange); background: rgba(255,156,0,0.1); }
     .dl-icon { font-size: 2rem; margin-bottom: 10px; color: var(--text-main); }
+
+    /* Video */
     .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000; }
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    /* Char Layout */
     .char-modal-layout { display: flex; gap: 40px; }
-    .char-modal-img { flex: 1; height: 500px; background: #000; border: 1px solid var(--border-dim); position: relative; overflow: hidden; }
+    .char-modal-img { flex: 1; height: 500px; background: #000; border: 1px solid var(--border-dim); position: relative; overflow: hidden; flex-shrink: 0; }
     .char-modal-img img { width: 100%; height: 100%; object-fit: cover; }
     .char-modal-info { flex: 1.5; display: flex; flex-direction: column; }
     .char-stat-row { margin-bottom: 15px; }
     .char-stat-label { font-family: var(--font-tech); color: var(--text-sub); font-size: 0.9rem; margin-bottom: 5px; display: flex; justify-content: space-between; }
     .char-stat-bar { width: 100%; height: 6px; background: #222; position: relative; }
     .char-stat-fill { height: 100%; background: var(--accent-orange); width: 0%; transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
-
-    /* ... PE ... */
+    .grid-overlay { position: absolute; inset: 0; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); pointer-events: none; z-index: 1; }
 
     @media (max-width: 768px) {
-        .modal-box {
-            width: 95%;
-            padding: 25px;
-            max-height: 90vh; /* 防止超高 */
-            overflow-y: auto; /* 允许内部滚动 */
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-        }
-
-        /* 角色详情弹窗变为单列 */
-        .char-modal-layout {
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .char-modal-img {
-            height: 300px;
-        }
-
-        .dl-grid {
-            grid-template-columns: 1fr; /* 下载选项单列 */
-        }
+        .modal-box { width: 95%; height: auto; }
+        .char-modal-layout { flex-direction: column; gap: 20px; }
+        .char-modal-img { height: 300px; width: 100%; }
+        .dl-grid { grid-template-columns: 1fr; }
+        
+        /* 手机端减小内边距 */
+        .modal-scroll-view { padding: 25px; }
     }
 </style>
 
 <script is:inline define:vars={{ charMap }}>
-    // define:vars 会自动将 charMap 序列化并注入到这个 script 标签中
-    // 此时 charData 变量就是我们在 TS 文件里定义的数据
     const charData = charMap;
 
     window.openModal = function(id) {
