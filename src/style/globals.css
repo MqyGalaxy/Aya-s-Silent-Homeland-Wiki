@@ -67,7 +67,51 @@ body {
 .hazard-box { width: 100%; height: 15px; background: var(--hazard-pattern); margin-bottom: 20px; border: 1px solid #000; }
 .content-deco { position: absolute; bottom: 20px; right: 20px; font-family: var(--font-tech); color: var(--border-dim); font-size: 0.8rem; text-align: right; pointer-events: none; }
 
-/* --- 📱 新增：移动端适配 (Mobile Responsive) --- */
+
+a {
+    color: var(--accent-orange);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--accent-orange);
+    cursor: pointer;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-orange);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 4px var(--accent-orange);
+}
+
+a:hover::after {
+    width: 100%; 
+}
+
+
+a.block-link, 
+.news-item-link,
+.archive-item {
+    color: inherit; /* 继承父元素颜色，而不是强制橙色 */
+    text-shadow: none;
+}
+
+a.block-link:hover::after,
+.news-item-link:hover::after,
+.archive-item:hover::after {
+    width: 0; /* 禁用下划线动画 */
+}
+
+/* --- PE --- */
 @media (max-width: 768px) {
     /* 1. 布局改为单列堆叠 */
     .layout-grid {
