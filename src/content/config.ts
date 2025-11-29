@@ -12,6 +12,30 @@ const newsCollection = defineCollection({
     }),
 });
 
+const wikiCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        category: z.enum(['CHARACTER', 'WEAPON', 'ITEM', 'STORY', 'TUTORIAL']), // 文章分类
+        description: z.string().optional(),
+        cover: z.string().optional(), // 封面图/缩略图
+
+        roleType: z.enum(['PLAYABLE', 'NPC', 'BOSS']).optional(),
+        
+        // --- 可选字段 (针对特定类型) ---
+        // 角色/武器属性
+        rarity: z.number().optional(), // 稀有度 1-5
+        id_code: z.string().optional(), // 编号 (如 NO.001)
+        // 武器专用
+        stats: z.object({
+            damage: z.string().optional(),
+            fireRate: z.string().optional(),
+            accuracy: z.string().optional(),
+        }).optional(),
+    }),
+});
+
 export const collections = {
     'news': newsCollection,
+    'wiki': wikiCollection, // 注册 wiki
 };

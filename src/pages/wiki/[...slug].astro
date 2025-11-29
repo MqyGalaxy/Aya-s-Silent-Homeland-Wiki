@@ -1,0 +1,451 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import WikiSidebar from '../../components/wiki/WikiSidebar.astro';
+
+// 1. 生成静态路径 (必须)
+export async function getStaticPaths() {
+  const wikiEntries = await getCollection('wiki');
+  return wikiEntries.map(entry => ({
+    params: { slug: entry.slug }, 
+    props: { entry },
+  }));
+}
+
+const getRoleTypeInfo = (type: string) => {
+    switch (type) {
+        case 'PLAYABLE': return { label: '自机特勤', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.2)' }; // 绿色
+        case 'BOSS': return { label: '威胁目标', color: '#c91a1a', bg: 'rgba(201, 26, 26, 0.2)' };    // 红色
+        case 'NPC': return { label: '中立人员', color: '#ff9c00', bg: 'rgba(255, 156, 0, 0.2)' };    // 橙色
+        default: return { label: '未知', color: '#888', bg: 'rgba(136, 136, 136, 0.2)' };
+    }
+};
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 稀有度颜色辅助
+const getRarityColor = (r) => {
+    if (r === 5) return '#ffbf00'; // 金
+    if (r === 4) return '#d8bfd8'; // 紫
+    if (r === 3) return '#00bfff'; // 蓝
+    return '#888';
+};
+---
+
+<Layout title={`${entry.data.title} - Wiki Database`}>
+    <Header />
+
+    <main class="wiki-entry-page">
+        <div class="layout-grid">
+            <WikiSidebar activeCategory={entry.data.category} />
+
+            <div class="content-area">
+                
+                <div class="breadcrumb">
+                    <a href="/wiki">DATABASE</a> 
+                    <span class="sep">/</span>
+                    <a href={`/wiki/category/${entry.data.category}`}>{entry.data.category}</a>
+                    <span class="sep">/</span>
+                    <span class="current">{entry.data.id_code || 'UNKNOWN'}</span>
+                </div>
+
+                <div class="entry-header">
+                    <h1 class="entry-title">{entry.data.title}</h1>
+                    <div class="entry-id-block">
+                        <span class="label">ID_CODE:</span>
+                        <span class="val">{entry.data.id_code}</span>
+                    </div>
+                </div>
+
+                <div class="entry-core-layout">
+                    
+                    <aside class="meta-panel">
+                        <div class="meta-cover">
+                            {entry.data.cover ? (
+                                <img src={entry.data.cover} alt={entry.data.title} />
+                            ) : (
+                                <div class="no-img">NO IMAGE</div>
+                            )}
+                            {entry.data.rarity && (
+                                <div class="rarity-badge" style={`color: ${getRarityColor(entry.data.rarity)}`}>
+                                    {'★'.repeat(entry.data.rarity)}
+                                </div>
+                            )}
+                            {entry.data.roleType && (
+                                <div class="role-badge" style={`
+                                    color: ${getRoleTypeInfo(entry.data.roleType).color}; 
+                                    border-color: ${getRoleTypeInfo(entry.data.roleType).color};
+                                    background: ${getRoleTypeInfo(entry.data.roleType).bg};
+                                `}>
+                                    {getRoleTypeInfo(entry.data.roleType).label}
+                                </div>
+                            )}
+                            <div class="grid-overlay"></div>
+                        </div>
+
+                        <div class="data-table">
+                            <div class="table-header">/// SPECIFICATIONS</div>
+                            
+                            {entry.data.category === 'WEAPON' && entry.data.stats && (
+                                <>
+                                    <div class="data-row">
+                                        <span class="key">伤害</span>
+                                        <span class="value">{entry.data.stats.damage}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="key">射速</span>
+                                        <span class="value">{entry.data.stats.fireRate}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="key">准确性</span>
+                                        <span class="value">{entry.data.stats.accuracy}</span>
+                                    </div>
+                                </>
+                            )}
+
+                            <div class="data-row">
+                                <span class="key">类型</span>
+                                <span class="value">{entry.data.category}</span>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <article class="main-text">
+                        {entry.data.description && (
+                            <blockquote class="intro-quote">
+                                {entry.data.description}
+                            </blockquote>
+                        )}
+
+                        <div class="prose-container">
+                            <Content />
+                        </div>
+                    </article>
+
+                </div>
+                
+                <div class="content-deco">END OF RECORD /// {entry.slug}</div>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</Layout>
+
+<style>
+    .wiki-entry-page { padding-top: 90px; min-height: 100vh; }
+
+    /* 面包屑 */
+    .breadcrumb { font-family: var(--font-tech); color: var(--text-sub); font-size: 0.9rem; margin-bottom: 20px; }
+    .breadcrumb a { color: var(--text-sub); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent-orange); }
+    .sep { margin: 0 10px; color: #333; }
+    .current { color: var(--accent-orange); }
+
+    /* 标题区优化 */
+    .entry-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: flex-end; /* 底部对齐 */
+        border-bottom: 2px solid var(--text-main); 
+        padding-bottom: 20px; /* 增加底部留白 */
+        margin-bottom: 50px;  /* 增加与下方内容的距离 */
+    }
+
+    .entry-title { 
+        font-family: var(--font-header); 
+        font-size: 3.5rem;    /*稍微加大字体 */
+        color: var(--text-main); 
+        line-height: 1.2;     /* 关键：增加行高，防止多行文字挤在一起 */
+        letter-spacing: 2px;  /* 关键：增加字间距，更具战术感 */
+        max-width: 70%;       /* 限制宽度，防止和右侧 ID 撞车 */
+        margin-bottom: -5px;  /* 视觉微调，抵消大字号的底部空白 */
+    }
+
+    .entry-id-block { 
+        font-family: var(--font-tech); 
+        font-size: 1.2rem; 
+        margin-bottom: 5px;   /* 与标题基线对齐 */
+        flex-shrink: 0;       /* 防止被标题挤压 */
+    }
+
+    .entry-id-block .label { 
+        color: var(--text-sub); 
+        margin-right: 10px; 
+    }
+
+    .entry-id-block .val { 
+        color: var(--accent-orange); 
+        font-weight: bold; 
+        letter-spacing: 1px;
+    }
+
+    /* --- 核心双栏布局 --- */
+    .entry-core-layout {
+        display: grid;
+        grid-template-columns: 350px 1fr; /* 左侧固定宽，右侧自适应 */
+        gap: 40px;
+    }
+
+    /* 左侧：数据面板 */
+    .meta-panel { display: flex; flex-direction: column; gap: 20px; }
+
+    .meta-cover { 
+        width: 100%; aspect-ratio: 3/4; 
+        background: #000; border: 1px solid var(--border-dim); 
+        position: relative; display: flex; align-items: center; justify-content: center;
+        overflow: hidden; /* 确保标签不溢出 */
+    }
+    .meta-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .no-img { font-family: var(--font-tech); color: #333; }
+    
+    /* 覆盖在图片上的稀有度 */
+    .rarity-badge {
+        position: absolute; bottom: 10px; right: 10px;
+        background: rgba(0,0,0,0.8); padding: 2px 8px;
+        font-size: 1rem; letter-spacing: 2px; border: 1px solid currentColor;
+        z-index: 2;
+    }
+
+    /* --- 角色类型标签样式 --- */
+    .role-badge {
+        position: absolute; 
+        top: 10px; 
+        left: 10px;
+        font-family: var(--font-tech);
+        font-size: 0.8rem;
+        font-weight: bold;
+        padding: 2px 8px;
+        border: 1px solid currentColor; /* 边框颜色跟随文字颜色 */
+        z-index: 2;
+        letter-spacing: 1px;
+        backdrop-filter: blur(4px); /* 毛玻璃背景 */
+        
+        /* 战术切角 (左上和右下切掉一点) */
+        clip-path: polygon(
+            5px 0, 100% 0, 
+            100% calc(100% - 5px), calc(100% - 5px) 100%, 
+            0 100%, 0 5px
+        );
+    }
+    
+    .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; z-index: 1; }
+
+    /* 数据表格 */
+    .data-table { background: rgba(255,255,255,0.02); border: 1px solid var(--border-dim); padding: 20px; }
+    .table-header { font-family: var(--font-tech); color: var(--accent-orange); border-bottom: 1px solid var(--border-dim); padding-bottom: 10px; margin-bottom: 15px; }
+    .data-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px dashed #333; padding-bottom: 5px; font-family: var(--font-tech); font-size: 0.9rem; }
+    .data-row .key { color: var(--text-sub); }
+    .data-row .value { color: var(--text-main); font-weight: bold; }
+
+    /* 右侧：正文 */
+    .main-text { flex: 1; }
+    
+    .intro-quote {
+        border-left: 4px solid var(--accent-orange);
+        background: rgba(255,156,0,0.05);
+        padding: 20px; margin: 0 0 30px 0;
+        font-style: italic; color: var(--text-sub); font-size: 1rem;
+    }
+
+    /* --- Markdown 内容样式优化 --- */
+    .prose-container { 
+        /* 1. 颜色与字体栈：增加系统字体回退，确保生僻字也能显示 */
+        color: #ccc; 
+        font-family: var(--font-main), system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        
+        /* 2. 提高信息密度：稍微减小字号和行高 */
+        font-size: 1rem;      /* 从 1.1rem 减小到 1rem */
+        line-height: 1.6;     /* 从 1.8 减小到 1.6，更加紧凑 */
+        
+        /* 3. 宽度优化：充分利用右侧空间，但保留最大阅读宽度的限制（防止太宽读着累） */
+        width: 100%;
+        max-width: none;      /* 取消最大宽度限制，填满右侧区域 */
+        
+        /* 4. 排版优化 */
+        text-align: justify;  /* 两端对齐，让大段文字块更整齐 */
+        letter-spacing: 0.02em; /* 微小的字间距，提升密集文字的清晰度 */
+    }
+
+    /* 标题样式微调 */
+    .prose-container :global(h2) { 
+        font-family: var(--font-header); 
+        font-size: 1.6rem;    /* 稍微减小二级标题 */
+        color: var(--text-main); 
+        margin-top: 35px;     /* 减小间距 */
+        margin-bottom: 15px; 
+        display: flex; 
+        align-items: center; 
+        border-bottom: 1px solid var(--border-dim); 
+        padding-bottom: 8px;
+    }
+    
+    .prose-container :global(h2::before) { 
+        content: '///'; 
+        color: var(--accent-orange); 
+        margin-right: 10px; 
+        font-size: 1rem; 
+        font-family: var(--font-tech); 
+        opacity: 0.8;
+    }
+
+    /* 段落间距微调 */
+    .prose-container :global(p) { 
+        margin-bottom: 15px; /* 减小段落间距 */
+    }
+    
+    .prose-container :global(ul), .prose-container :global(ol) { 
+        padding-left: 18px; 
+        margin-bottom: 15px; 
+    }
+    
+    .prose-container :global(li) { 
+        margin-bottom: 4px; /* 列表项更紧凑 */
+    }
+    
+    /* 强调文字 */
+    .prose-container :global(strong) { 
+        color: #fff; 
+        font-weight: bold;
+    }
+
+    /* --- 智能图片容器 --- */
+
+    /* 包裹容器 */
+    :global(.tactical-figure) {
+        /* 关键：让容器宽度自动收缩以适应内容(图片) */
+        width: fit-content;
+        max-width: 100%;
+        /* 居中显示 */
+        margin: 30px auto; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 图片样式 (强制覆盖 Markdown 默认样式) */
+    :global(.tactical-figure img) {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 0; /* 移除默认外边距，由 figure 控制 */
+        
+        /* 战术外观 */
+        border: 1px solid var(--border-dim);
+        background-color: #000;
+        opacity: 0.95;
+        transition: all 0.3s ease;
+        
+        /* 战术切角 */
+        clip-path: polygon(
+            0 0, 
+            100% 0, 
+            100% calc(100% - 10px), 
+            calc(100% - 10px) 100%, 
+            0 100%, 
+            0 10px
+        );
+    }
+
+    :global(.tactical-figure img:hover) {
+        opacity: 1;
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 15px rgba(255, 156, 0, 0.2);
+    }
+
+    /* 注释文字样式 (figcaption) */
+    :global(.tactical-figure figcaption) {
+        /* 宽度跟随父容器(即跟随图片)，且不允许超出 */
+        width: 100%; 
+        
+        margin-top: 8px;
+        padding: 8px 12px;
+        
+        /* 视觉样式：橙色下划线背景块 */
+        border-bottom: 2px solid var(--border-dim);
+        
+        /* 字体样式 */
+        font-family: var(--font-tech);
+        font-size: 0.85rem;
+        color: var(--text-sub);
+        text-align: center;
+        line-height: 1.4;
+        
+        /* 关键：强制长单词换行，防止撑破布局 */
+        word-wrap: break-word;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 900px) {
+        .entry-core-layout { grid-template-columns: 1fr; } /* 变为单栏 */
+        .meta-cover { aspect-ratio: 16/9; /* 手机上改为横图显示，节省高度 */ }
+        .entry-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .entry-title {
+            font-size: 2.5rem;
+            max-width: 100%;
+        }
+        
+        :global(.tactical-figure) {
+            width: 100%;
+            min-width: 100%;
+        }
+        :global(.tactical-figure img) {
+            width: 100%;
+        }
+    }
+</style>
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.prose-container');
+        if (!container) return;
+
+        // 查找所有图片
+        const images = container.querySelectorAll('img');
+
+        images.forEach(img => {
+            // 获取图片的下一个节点
+            let nextNode = img.nextSibling;
+            
+            // 跳过中间的换行符或空文本节点
+            while (nextNode && nextNode.nodeType === 3 && !nextNode.textContent.trim()) {
+                nextNode = nextNode.nextSibling;
+            }
+
+            // 如果下一个元素是 <em> (斜体，即 Markdown 中的 *文字*)
+            if (nextNode && nextNode.tagName === 'EM') {
+                // 1. 创建 <figure> 容器
+                const figure = document.createElement('figure');
+                figure.className = 'tactical-figure';
+                
+                // 2. 创建 <figcaption>
+                const caption = document.createElement('figcaption');
+                caption.innerHTML = nextNode.innerHTML; // 转移文字内容
+                
+                // 3. 插入 DOM
+                // 将 figure 插在图片前面
+                img.parentNode.insertBefore(figure, img);
+                
+                // 将图片和注释移动到 figure 内部
+                figure.appendChild(img);
+                figure.appendChild(caption);
+                
+                // 4. 移除原来的 em 标签
+                nextNode.remove();
+            } else {
+                // 如果没有注释，也给图片包一个普通的战术容器，保持样式一致（可选）
+                // 这里我们只给 img 添加类名让它应用基本样式
+                img.classList.add('tactical-img-standalone');
+            }
+        });
+    });
+</script>

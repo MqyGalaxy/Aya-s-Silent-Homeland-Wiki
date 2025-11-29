@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import logoImage from '../../assets/images/logo.png';
 
 const currentPath = Astro.url.pathname;
+const isWikiPage = currentPath.startsWith('/wiki');
 const isNewsPage = currentPath.startsWith('/news');
 const isHomePage = currentPath === '/';
 ---
@@ -54,8 +55,8 @@ const isHomePage = currentPath === '/';
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link">
-                    <span class="nav-cn">WIKI</span><span class="nav-en">DB</span>
+                <a href="/wiki" class:list={["nav-link", { "active": isWikiPage }]}>
+                    <span class="nav-cn">WIKI</span><span class="nav-en">WIKI</span>
                 </a>
             </li>
         </ul>

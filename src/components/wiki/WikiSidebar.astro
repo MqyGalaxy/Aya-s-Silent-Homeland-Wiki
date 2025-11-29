@@ -1,0 +1,111 @@
+---
+export interface Props {
+    activeCategory?: string;
+}
+
+const { activeCategory } = Astro.props;
+
+const categories = [
+    { id: 'CHARACTER', label: '人物档案', code: 'OP' },
+    { id: 'WEAPON', label: '武器库', code: 'WP' },
+    { id: 'ITEM', label: '物资道具', code: 'IT' },
+    { id: 'STORY', label: '剧情记录', code: 'ST' },
+    { id: 'TUTORIAL', label: '教程', code: 'TU' },
+];
+---
+
+<div class="sidebar">
+    <div class="sidebar-sticky">
+        <div class="wiki-nav-header">
+            <span class="section-num">DB</span>
+            <div class="hazard-box"></div>
+            <h2 class="section-title-cn">资料<br>分类</h2>
+            <span class="section-title-en">Categories</span>
+        </div>
+
+        <div class="filter-group">
+            <a href="/wiki" class="filter-item back-link">
+                <span class="icon">&lt;</span> OVERVIEW
+            </a>
+            
+            <div class="divider"></div>
+
+            {categories.map((cat) => (
+                <a 
+                    href={`/wiki/category/${cat.id}`} 
+                    class:list={["filter-item", { "active": activeCategory === cat.id }]}
+                >
+                    <span class="cat-code">[{cat.code}]</span>
+                    <span class="cat-label">{cat.label}</span>
+                    {activeCategory === cat.id && <span class="active-indicator">///</span>}
+                </a>
+            ))}
+        </div>
+        
+        <div style="margin-top: 40px; font-family: var(--font-tech); color: var(--border-bright); font-size: 0.8rem;">
+            DATABASE_V1.0.0<br>ACCESS_GRANTED
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 复用全局 Sidebar 样式 */
+    .sidebar { background: var(--bg-panel); border-right: 1px solid var(--border-dim); padding: 140px 30px 40px 30px; position: relative; z-index: 10; }
+    .sidebar-sticky { position: sticky; top: 150px; }
+    .sidebar::before { content: ''; position: absolute; top: 0; right: -1px; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, var(--accent-orange), transparent); opacity: 0.5; }
+    
+    /* Wiki 特有样式 */
+    .wiki-nav-header { margin-bottom: 30px; position: relative; }
+    .section-num { font-family: var(--font-header); font-size: 6rem; color: rgba(255,255,255,0.1); position: absolute; top: -50px; left: -10px; pointer-events: none; line-height: 0.8; }
+    .section-title-cn { font-size: 2rem; font-weight: 900; line-height: 1.1; font-style: italic; position: relative; z-index: 2; }
+    .section-title-en { font-family: var(--font-header); color: var(--accent-orange); letter-spacing: 2px; position: relative; z-index: 2; }
+    .hazard-box { width: 50px; height: 10px; background: var(--hazard-pattern); margin-bottom: 10px; border: 1px solid #000; }
+
+    .filter-group { display: flex; flex-direction: column; gap: 5px; }
+    
+    .filter-item {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 15px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid transparent;
+        border-left: 2px solid var(--border-dim);
+        color: var(--text-main);
+        text-decoration: none;
+        font-family: var(--font-main);
+        font-size: 0.95rem;
+        transition: 0.2s;
+    }
+
+    .filter-item:hover {
+        background: rgba(255,156,0,0.1);
+        border-left-color: var(--accent-orange);
+        padding-left: 20px;
+    }
+
+    .filter-item.active {
+        background: var(--accent-orange);
+        color: #000;
+        border-color: var(--accent-orange);
+        font-weight: bold;
+        padding-left: 20px;
+        box-shadow: 0 0 15px rgba(255,156,0,0.3);
+    }
+
+    .cat-code { font-family: var(--font-tech); margin-right: 10px; opacity: 0.6; font-size: 0.8rem; }
+    .filter-item.active .cat-code { opacity: 0.8; }
+
+    .active-indicator { font-weight: bold; animation: blink 1s infinite; }
+    .back-link { color: var(--text-sub); border-left-color: transparent; }
+    .back-link .icon { margin-right: 10px; color: var(--accent-orange); }
+    .divider { height: 1px; background: var(--border-dim); margin: 10px 0; }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    @media (max-width: 768px) {
+        .sidebar { border-right: none; padding: 80px 20px 20px; }
+        .section-num { font-size: 4rem; top: -20px; }
+        .filter-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .divider { display: none; }
+        .back-link { grid-column: span 2; }
+    }
+</style>
