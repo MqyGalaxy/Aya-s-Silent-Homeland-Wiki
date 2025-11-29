@@ -1,0 +1,19 @@
+:root {
+    --bg-deep: #050505;
+    --bg-panel: #0e0e10;
+    --border-dim: #333;
+    --border-bright: #666;
+    
+    --accent-orange: #ff9c00;
+    --accent-red: #c91a1a;
+    --accent-green: #4ade80;
+    
+    --text-main: #e0e0e0;
+    --text-sub: #888;
+    
+    --font-main: 'Noto Sans SC', sans-serif;
+    --font-header: 'Oswald', sans-serif;
+    --font-tech: 'Share Tech Mono', monospace;
+
+    --hazard-pattern: repeating-linear-gradient(45deg, #000, #000 5px, var(--accent-orange) 5px, var(--accent-orange) 10px);
+}

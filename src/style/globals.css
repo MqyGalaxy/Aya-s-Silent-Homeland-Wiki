@@ -1,0 +1,108 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    overflow-x: hidden;
+}
+
+/* --- PC端 默认布局 --- */
+.layout-grid { 
+    display: grid; 
+    grid-template-columns: 320px 1fr; 
+    min-height: 100vh; 
+    border-bottom: 1px solid var(--border-dim); 
+}
+
+.sidebar { 
+    background: var(--bg-panel); 
+    border-right: 1px solid var(--border-dim); 
+    padding: 140px 30px 40px 30px; 
+    position: relative; 
+    z-index: 10; 
+}
+
+.sidebar-sticky { 
+    position: sticky; 
+    top: 150px; 
+}
+
+.sidebar::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    right: -1px; 
+    width: 1px; 
+    height: 100%; 
+    background: linear-gradient(to bottom, transparent, var(--accent-orange), transparent); 
+    opacity: 0.5; 
+}
+
+.content-area { 
+    padding: 140px 50px; 
+    position: relative; 
+}
+
+/* 侧边栏通用元素 */
+.section-num { 
+    font-family: var(--font-header); 
+    font-size: 3rem; 
+    color: rgba(255,255,255,0.15); 
+    line-height: 0.8; 
+    position: absolute; 
+    top: -45px; 
+    left: 0; 
+    pointer-events: none;
+}
+
+.section-title-cn { font-size: 2.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 5px; font-style: italic; position: relative; z-index: 2; }
+.section-title-en { font-family: var(--font-header); font-size: 1.2rem; color: var(--accent-orange); text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; position: relative; z-index: 2; }
+.section-title-en::after { content:''; height: 2px; width: 50px; background: var(--accent-orange); margin-left: 15px; }
+.section-desc { margin-top: 30px; font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; border-left: 2px solid var(--border-dim); padding-left: 15px; position: relative; z-index: 2; }
+.hazard-box { width: 100%; height: 15px; background: var(--hazard-pattern); margin-bottom: 20px; border: 1px solid #000; }
+.content-deco { position: absolute; bottom: 20px; right: 20px; font-family: var(--font-tech); color: var(--border-dim); font-size: 0.8rem; text-align: right; pointer-events: none; }
+
+/* --- 📱 新增：移动端适配 (Mobile Responsive) --- */
+@media (max-width: 768px) {
+    /* 1. 布局改为单列堆叠 */
+    .layout-grid {
+        padding-top: 60px;
+        grid-template-columns: 1fr; /* 只有一列 */
+        min-height: auto;
+    }
+
+    /* 2. 侧边栏变为顶部标题栏 */
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-dim);
+        padding: 60px 20px 20px 20px; /* 减少内边距 */
+        min-height: auto;
+    }
+
+    .sidebar::before { display: none; } /* 移除右侧装饰线 */
+
+    .sidebar-sticky {
+        position: static; /* 取消粘性定位 */
+    }
+
+    /* 3. 调整标题字号 */
+    .section-num {
+        top: 15px;
+        left: 20px;
+    }
+
+    .section-title-cn { font-size: 2rem; }
+    .section-desc { margin-top: 15px; font-size: 0.85rem; max-width: 100%; }
+
+    /* 4. 内容区域调整 */
+    .content-area {
+        padding: 40px 20px; /* 减少两侧留白 */
+    }
+    
+    .content-deco { display: none; }
+}

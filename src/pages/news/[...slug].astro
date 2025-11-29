@@ -1,0 +1,238 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+// 1. 生成所有文章的静态路径
+export async function getStaticPaths() {
+  const newsEntries = await getCollection('news');
+  // Astro 会自动将文件夹路径包含在 slug 中 (例如: "dev/20251130")
+  return newsEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+// 2. 获取当前页面的数据
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 辅助函数：根据 tagColor 返回颜色变量
+const getTagColor = (color) => {
+    if (color === 'orange') return 'var(--accent-orange)';
+    if (color === 'red') return 'var(--accent-red)';
+    return '#888'; // default
+};
+const accentColor = getTagColor(entry.data.tagColor);
+---
+
+<Layout title={`${entry.data.title} - 射命丸文的寂静的故乡 / Shameimaru Aya's Silent Homeland`}>
+    <Header />
+
+    <main class="article-page">
+        <div class="article-header">
+            <div class="header-content">
+                <div class="meta-row">
+                    <span class="news-tag" style={`color: ${accentColor}; border-color: ${accentColor};`}>
+                        {entry.data.tag}
+                    </span>
+                    <span class="news-date">{entry.data.date}</span>
+                </div>
+                <h1 class="article-title">{entry.data.title}</h1>
+                <div class="hazard-line"></div>
+            </div>
+            <div class="bg-deco">
+                {entry.slug.split('/')[0].toUpperCase()}_ARCHIVE
+            </div>
+        </div>
+
+        <div class="article-body">
+            <div class="prose-container">
+                <Content />
+            </div>
+            
+            <div class="article-footer">
+                <a href="/#news" class="back-btn">
+                    <span class="icon">&lt;</span> RETURN TO DATABASE
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</Layout>
+
+<style define:vars={{ accentColor }}>
+    /* 页面容器 */
+    .article-page {
+        min-height: 100vh;
+        padding-top: 120px;
+        background-color: var(--bg-deep);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* --- 1. 文章头部样式 --- */
+    .article-header {
+        width: 100%;
+        max-width: 900px;
+        padding: 40px 20px;
+        position: relative;
+        /* -- border-left: 4px solid var(--accentColor); -- */
+        background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+        margin-bottom: 40px;
+    }
+
+    .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-family: var(--font-tech);
+    }
+
+    .news-tag {
+        border: 1px solid currentColor;
+        padding: 2px 8px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .news-date {
+        color: var(--text-sub);
+    }
+
+    .article-title {
+        font-family: var(--font-header);
+        font-size: 2.5rem;
+        color: var(--text-main);
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .hazard-line {
+        height: 10px;
+        width: 100px;
+        background: repeating-linear-gradient(
+            45deg, 
+            var(--accentColor), 
+            var(--accentColor) 5px, 
+            #000 5px, 
+            #000 10px
+        );
+    }
+
+    .bg-deco {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-family: var(--font-header);
+        font-size: 4rem;
+        color: rgba(255,255,255,0.03);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* --- 2. 文章主体样式 --- */
+    .article-body {
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+        margin-bottom: 80px;
+    }
+
+    .prose-container {
+        color: #ccc;
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+
+    /* Markdown 样式定制 */
+    .prose-container :global(h1) { font-size: 0; display: none; }
+    
+    .prose-container :global(h2) {
+        font-family: var(--font-header);
+        font-size: 1.8rem;
+        color: var(--text-main);
+        margin-top: 40px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-dim);
+        padding-bottom: 10px;
+    }
+
+    .prose-container :global(h3) {
+        font-family: var(--font-main);
+        font-size: 1.4rem;
+        color: var(--accent-orange);
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .prose-container :global(p) {
+        margin-bottom: 20px;
+        text-align: justify;
+    }
+
+    .prose-container :global(ul), .prose-container :global(ol) {
+        margin-bottom: 20px;
+        padding-left: 20px;
+        /* --border-left: 2px solid var(--border-dim); -- */
+    }
+
+    .prose-container :global(li) {
+        margin-bottom: 10px;
+    }
+
+    .prose-container :global(strong) {
+        color: var(--text-main);
+        font-weight: bold;
+    }
+
+    .prose-container :global(blockquote) {
+        background: rgba(255,255,255,0.05);
+        border-left: 4px solid var(--accent-orange);
+        padding: 20px;
+        margin: 30px 0;
+        font-style: italic;
+        color: var(--text-sub);
+    }
+
+    .prose-container :global(code) {
+        background: #222;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: var(--font-tech);
+        font-size: 0.9em;
+        color: var(--accent-orange);
+    }
+
+    /* --- 3. 底部返回 --- */
+    .article-footer {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid var(--border-dim);
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        border: 1px solid var(--border-bright);
+        color: var(--text-main);
+        text-decoration: none;
+        font-family: var(--font-tech);
+        transition: 0.3s;
+    }
+
+    .back-btn:hover {
+        background: var(--accent-orange);
+        color: #000;
+        border-color: var(--accent-orange);
+    }
+
+    .back-btn .icon {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+</style>

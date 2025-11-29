@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import NewsSidebar from '../../components/news/NewsSidebar.astro'; // 引入侧边栏
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const pageSize = 10;
+const pageNews = sortedNews.slice(0, pageSize);
+const totalPages = Math.ceil(sortedNews.length / pageSize);
+---
+
+<Layout title="News Archive - Silent Homeland">
+    <Header />
+
+    <main class="news-archive-page">
+        <div class="archive-banner">
+            <h1 class="archive-title">NEWS CENTER</h1>
+            <div class="archive-subtitle">139号避难所 /// 资讯中心</div>
+        </div>
+
+        <div class="layout-grid">
+            <NewsSidebar activeCategory="ALL" />
+
+            <div class="content-area">
+                <div class="archive-list">
+                    {pageNews.map((news) => (
+                        <a href={`/news/${news.slug}`} class="archive-item">
+                            <div class="item-left">
+                                <span class="item-tag" 
+                                    style={news.data.tagColor === 'red' ? 'color: var(--accent-red); border-color: var(--accent-red)' : 
+                                           news.data.tagColor === 'orange' ? 'color: var(--accent-orange); border-color: var(--accent-orange)' : 
+                                           'color: #888; border-color: #555'}
+                                >
+                                    {news.data.tag}
+                                </span>
+                                <span class="item-date">{news.data.date}</span>
+                            </div>
+                            <div class="item-center">
+                                <h3 class="item-title">{news.data.title}</h3>
+                                <p class="item-desc">{news.data.description || "点击查看详情..."}</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="arrow">>>></span>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+
+                {totalPages > 1 && (
+                    <div class="pagination">
+                        <span class="page-current">PAGE 1 / {totalPages}</span>
+                        <a href="/news/page/2" class="page-btn">NEXT &gt;</a>
+                    </div>
+                )}
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</Layout>
+
+<style>
+    /* CSS 同上 */
+    .news-archive-page { min-height: 100vh; padding-top: 90px; }
+    .archive-banner { height: 200px; background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url('https://placehold.co/1920x400/222/000?text=ARCHIVE+HEADER') center/cover; display: flex; flex-direction: column; justify-content: center; padding-left: 10vw; border-bottom: 1px solid var(--border-dim); }
+    .archive-title { font-family: var(--font-header); font-size: 4rem; color: var(--text-main); line-height: 1; }
+    .archive-subtitle { font-family: var(--font-tech); color: var(--accent-orange); font-size: 1.2rem; letter-spacing: 2px; margin-top: 10px; }
+    .archive-list { display: flex; flex-direction: column; gap: 10px; }
+    .archive-item { display: flex; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid transparent; padding: 30px; text-decoration: none; transition: 0.3s; }
+    .archive-item:hover { background: rgba(255,255,255,0.05); border-color: var(--accent-orange); transform: translateX(10px); }
+    .item-left { display: flex; flex-direction: column; gap: 10px; width: 120px; flex-shrink: 0; }
+    .item-tag { font-family: var(--font-tech); border: 1px solid #666; padding: 2px 0; text-align: center; font-size: 0.8rem; }
+    .item-date { font-family: var(--font-tech); color: var(--text-sub); font-size: 0.9rem; }
+    .item-center { flex: 1; padding: 0 40px; }
+    .item-title { font-size: 1.5rem; color: var(--text-main); margin-bottom: 10px; transition: 0.3s; }
+    .archive-item:hover .item-title { color: var(--accent-orange); }
+    .item-desc { color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .item-right { font-family: var(--font-tech); color: var(--border-bright); font-size: 1.5rem; opacity: 0; transition: 0.3s; }
+    .archive-item:hover .item-right { opacity: 1; transform: translateX(10px); color: var(--accent-orange); }
+    .pagination { margin-top: 60px; display: flex; align-items: center; gap: 20px; font-family: var(--font-tech); }
+    .page-current { color: var(--text-sub); }
+    .page-btn { padding: 10px 30px; border: 1px solid var(--border-bright); color: var(--text-main); text-decoration: none; transition: 0.3s; }
+    .page-btn:hover { background: var(--accent-orange); color: #000; border-color: var(--accent-orange); }
+    @media (max-width: 768px) {
+        .archive-item { flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px; }
+        .item-left { flex-direction: row; width: 100%; justify-content: space-between; align-items: center; }
+        .item-center { padding: 0; }
+        .item-right { display: none; }
+        .archive-title { font-size: 2.5rem; }
+    }
+</style>

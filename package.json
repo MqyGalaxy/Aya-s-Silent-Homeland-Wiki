@@ -9,6 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource/noto-sans-sc": "^5.2.8",
+    "@fontsource/oswald": "^5.2.8",
+    "@fontsource/share-tech-mono": "^5.2.7",
     "astro": "^5.16.2"
   }
 }

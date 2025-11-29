@@ -1,0 +1,58 @@
+<div id="features" class="layout-grid">
+    <div class="sidebar">
+        <div class="sidebar-sticky">
+            <span class="section-num">01</span>
+            <div class="hazard-box"></div>
+            <h2 class="section-title-cn">游戏<br>特色</h2>
+            <span class="section-title-en">Features</span>
+            <p class="section-desc">
+                战术射击，角色扮演，基地建设。<br>
+                在废土中重建幻想乡。
+            </p>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+                <div class="feature-title">战术射击 RPG</div>
+                <div class="feature-text">高强度的俯视角射击战斗，配合角色专属技能，体验爽快的弹幕与战术配合。</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+                <div class="feature-title">避难所建设</div>
+                <div class="feature-text">从零开始重建 139 号避难所，分配资源，布置设施，为幸存者提供安全的家园。</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+                <div class="feature-title">废土探索</div>
+                <div class="feature-text">探索崩坏后的幻想乡，从博丽神社遗址到旧地狱，发掘隐藏的真相与宝藏。</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; height: 100%; }
+    .feature-card { border: 1px solid var(--border-dim); background: rgba(0,0,0,0.3); padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; transition: 0.3s; position: relative; overflow: hidden; height: 400px; }
+    .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, #000 0%, transparent 80%); z-index: 1; }
+    .feature-card:hover { border-color: var(--accent-orange); transform: translateY(-5px); }
+    .feature-icon { font-size: 3rem; color: var(--border-bright); margin-bottom: auto; opacity: 0.5; font-family: var(--font-header); }
+    .feature-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; position: relative; z-index: 2; color: #fff; }
+    .feature-text { font-size: 0.9rem; color: var(--text-sub); position: relative; z-index: 2; }
+
+/* ... PE ... */
+
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr; /* 单列 */
+        gap: 15px;
+    }
+
+    .feature-card {
+        height: auto; /* 高度自适应 */
+        min-height: 250px;
+        padding: 20px;
+    }
+}
+</style>

@@ -1,0 +1,73 @@
+---
+export interface Props {
+    activeCategory?: string; // 当前激活的分类，例如 'SYSTEM', 'EVENT', 或 'ALL'
+}
+
+const { activeCategory = 'ALL' } = Astro.props;
+
+// 定义分类列表 (Label: 显示名, ID: 数据中的 tag, Path: 跳转路径)
+const categories = [
+    { label: 'ALL /// 全部', id: 'ALL', path: '/news' },
+    { label: 'NOTICES /// 公告', id: 'NPTICES', path: '/news/category/NOTICES' },
+    { label: 'EVENT /// 活动', id: 'EVENT', path: '/news/category/EVENT' },
+    { label: 'DEV /// 开发', id: 'DEV', path: '/news/category/DEV' },
+];
+---
+
+<div class="sidebar">
+    <div class="sidebar-sticky">
+        <div class="filter-group">
+            <div class="filter-label">CATEGORY</div>
+            
+            {categories.map((cat) => (
+                <a 
+                    href={cat.path} 
+                    class:list={["filter-item", { "active": activeCategory === cat.id }]}
+                >
+                    {cat.label}
+                </a>
+            ))}
+        </div>
+        
+        <div class="hazard-box" style="margin-top: 40px;"></div>
+    </div>
+</div>
+
+<style>
+    /* 复用之前的侧边栏样式 */
+    .sidebar { background: #0e0e10; border-right: 1px solid #333; padding: 140px 30px 40px 30px; position: relative; z-index: 10; }
+    .sidebar-sticky { position: sticky; top: 150px; }
+    .sidebar::before { content: ''; position: absolute; top: 0; right: -1px; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, #ff9c00, transparent); opacity: 0.5; }
+    
+    .filter-label { font-family: 'Share Tech Mono', monospace; color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+    
+    .filter-item {
+        display: block;
+        padding: 15px 0;
+        border-bottom: 1px solid #333;
+        color: #e0e0e0;
+        text-decoration: none;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    
+    .filter-item:hover, .filter-item.active {
+        color: #ff9c00;
+        padding-left: 10px;
+        border-bottom-color: #ff9c00;
+    }
+
+    .hazard-box { width: 100%; height: 15px; background: repeating-linear-gradient(45deg, #000, #000 5px, #ff9c00 5px, #ff9c00 10px); margin-bottom: 20px; border: 1px solid #000; }
+
+    @media (max-width: 768px) {
+        .sidebar { border-right: none; border-bottom: 1px solid #333; padding: 60px 20px 20px 20px; min-height: auto; }
+        .sidebar::before { display: none; }
+        .sidebar-sticky { position: static; }
+        /* 手机端横向排列过滤器 */
+        .filter-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-label { width: 100%; }
+        .filter-item { border: 1px solid #333; padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; }
+        .filter-item:hover, .filter-item.active { padding-left: 5px; background: #ff9c00; color: #000; }
+    }
+</style>

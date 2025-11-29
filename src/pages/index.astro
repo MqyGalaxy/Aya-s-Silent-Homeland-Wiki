@@ -1,11 +1,52 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Hero from '../components/home/Hero.astro';
+import Features from '../components/home/Features.astro';
+import Operators from '../components/home/Operators.astro';
+import WorldMap from '../components/home/WorldMap.astro';
+import NewsSection from '../components/home/NewsSection.astro';
+import GlobalModals from '../components/ui/GlobalModals.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="射命丸文的寂静的故乡 / Shameimaru Aya's Silent Homeland">
+    <Header />
+    
+    <main>
+        <Hero />
+        <Features />
+        <Operators />
+        <WorldMap />
+        <NewsSection />
+    </main>
+
+    <Footer />
+    
+    <GlobalModals />
 </Layout>
+
+<script is:inline>
+    // ScrollSpy 逻辑：根据滚动高亮 Header
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainSections = document.querySelectorAll('#hero, #features, #operators, #world, #news');
+        const navLi = document.querySelectorAll('nav ul li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            mainSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - window.innerHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    });
+</script>

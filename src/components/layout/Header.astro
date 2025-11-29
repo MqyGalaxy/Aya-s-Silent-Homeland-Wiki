@@ -1,0 +1,306 @@
+---
+import { Image } from 'astro:assets';
+import logoImage from '../../assets/images/logo.png';
+
+const currentPath = Astro.url.pathname;
+const isNewsPage = currentPath.startsWith('/news');
+const isHomePage = currentPath === '/';
+---
+
+<header>
+    <div class="logo-block">
+        <a href="/">
+            <Image src={logoImage} alt="Silent Homeland Logo" class="logo-img" />
+        </a>
+        <!--<span class="logo-en">SILENT HOMELAND</span>
+        <span class="logo-cn">射命丸文的寂静的故乡</span> -->
+    </div>
+
+    <button id="menuToggle" class="mobile-toggle" aria-label="Toggle Menu">
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+    </button>
+
+    <nav id="mainNav">
+        <div class="mobile-nav-header">
+            <span class="sys-text">/// SYSTEM_NAV</span>
+        </div>
+
+        <ul>
+            <li>
+                <a href="/#hero" class:list={["nav-link", { "active": isHomePage }]}>
+                    <span class="nav-cn">主页</span><span class="nav-en">HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#features" class="nav-link">
+                    <span class="nav-cn">详情</span><span class="nav-en">FEATURES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#operators" class="nav-link">
+                    <span class="nav-cn">特勤</span><span class="nav-en">SQUAD</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#world" class="nav-link">
+                    <span class="nav-cn">世界观</span><span class="nav-en">WORLD</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#news" class:list={["nav-link", { "active": isNewsPage }]}>
+                    <span class="nav-cn">情报</span><span class="nav-en">NEWS</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <span class="nav-cn">WIKI</span><span class="nav-en">DB</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="mobile-nav-footer">
+            VAULT-139 CONNECTION ESTABLISHED
+        </div>
+    </nav>
+
+    <div id="menuOverlay" class="mobile-overlay"></div>
+</header>
+
+<style>
+    /* --- 1. 桌面端基础样式 (默认) --- */
+    header {
+        position: fixed; top: 0; left: 0; width: 100%; height: 90px;
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0 50px; z-index: 1000;
+        background: linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.8) 100%);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* 修改：Logo 容器样式 */
+    .logo-block { 
+        display: flex; 
+        align-items: center; /* 垂直居中 */
+        /* border-left: 4px solid var(--accent-orange); */
+        padding-left: 15px; 
+        z-index: 1000; 
+        height: 50px; /* 限制容器高度 */
+    }
+    
+    /* 新增：Logo 图片样式 */
+    .logo-img {
+        height: 70px;      /* 跟随容器高度 */
+        width: auto;       /* 宽度自适应保持比例 */
+        object-fit: contain;
+        display: block;
+    }
+    /*--
+    .logo-block { display: flex; flex-direction: column; border-left: 4px solid var(--accent-orange); padding-left: 15px; z-index: 1000; }
+    .logo-en { font-family: var(--font-header); font-size: 22px; letter-spacing: 2px; color: var(--text-main); }
+    .logo-cn { font-size: 12px; color: var(--text-sub); letter-spacing: 4px; font-family: var(--font-tech); }
+    -- */
+
+    /* !!! 关键修复：强制隐藏移动端元素 !!! */
+    .mobile-toggle, 
+    .mobile-overlay, 
+    .mobile-nav-header, 
+    .mobile-nav-footer { 
+        display: none !important; 
+    }
+
+    /* 桌面端导航布局 */
+    nav ul { display: flex; gap: 5px; list-style: none; height: 100%; align-items: center; }
+    
+    nav a { 
+        position: relative; text-decoration: none; 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        padding: 5px 25px; height: 70px; transition: all 0.3s; 
+    }
+    
+    .nav-cn { 
+        color: var(--text-sub); font-size: 20px; font-weight: 900; font-style: italic; 
+        line-height: 1; margin-bottom: 4px; z-index: 2; transition: 0.3s; text-transform: uppercase; 
+    }
+    .nav-en { 
+        color: var(--accent-orange); font-family: var(--font-tech); font-size: 10px; 
+        letter-spacing: 1px; font-weight: bold; z-index: 2; opacity: 0.5; transition: 0.3s; 
+    }
+
+    /* 桌面端 Hover/Active 效果 */
+    @media (min-width: 769px) {
+        nav a:hover .nav-cn, nav a.active .nav-cn { 
+            color: #fff; transform: scale(1.05); text-shadow: 0 2px 5px rgba(0,0,0,0.5); 
+        }
+        nav a:hover .nav-en, nav a.active .nav-en { opacity: 1; }
+
+        nav a.active::before {
+            content: '';
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            width: 120%;
+            height: 25px;
+            border-radius: 20px;
+            background-color: var(--accent-red);
+            z-index: 0;
+            transform: translate(-50%, -50%) rotate(-1deg) skewX(-10deg);
+            filter: url(#ink-stroke);
+            mask-image: linear-gradient(90deg, transparent 0%, black 30%, black 65%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 30%, black 65%, transparent 100%);
+            opacity: 0.9;
+        }
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            width: 130%;
+            height: 30px;
+            background: repeating-linear-gradient(to bottom, var(--accent-red), transparent 2px, var(--accent-red) 4px);
+            transform: translate(-50%, -50%) rotate(-1deg);
+            filter: url(#ink-stroke) blur(1px);
+            mask-image: linear-gradient(90deg, transparent 0%, black 35%, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 35%, black 60%, transparent 100%);
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+            z-index: 0;
+        }
+    }
+
+    /* --- 2. 移动端适配 (Max Width 768px) --- */
+    @media (max-width: 768px) {
+        header { padding: 0 20px; height: 70px; }
+        
+        
+        .logo-img { height: 50px;}
+        /* .logo-en { font-size: 18px; }
+        .logo-cn { display: none; } */
+
+        /* 显示汉堡按钮 */
+        .mobile-toggle {
+            display: flex !important; /* 覆盖上面的 display: none */
+            flex-direction: column; justify-content: space-between;
+            width: 30px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1002;
+        }
+        .line { width: 100%; height: 2px; background: var(--accent-orange); transition: 0.3s; }
+        
+        .mobile-toggle.open .line-1 { transform: rotate(45deg) translate(5px, 5px); background: #fff; }
+        .mobile-toggle.open .line-2 { opacity: 0; }
+        .mobile-toggle.open .line-3 { transform: rotate(-45deg) translate(5px, -6px); background: #fff; }
+
+        /* 侧边栏容器样式 */
+        nav {
+            position: fixed; top: 0; right: -100%; /* 默认移出屏幕 */
+            width: 80%; max-width: 300px; height: 100vh;
+            background: rgba(15, 15, 20, 0.98);
+            border-left: 2px solid var(--accent-orange);
+            backdrop-filter: blur(15px);
+            padding-top: 0; /* 让 Header 顶头 */
+            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1001;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column;
+        }
+
+        /* 激活状态：滑入 */
+        nav.open { right: 0; }
+
+        /* 显示移动端特有元素 */
+        nav .mobile-nav-header { 
+            display: flex !important; /* 强制显示 */
+            justify-content: space-between; align-items: center;
+            padding: 25px 30px; margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+        }
+        .sys-text { font-family: var(--font-tech); color: var(--accent-orange); font-size: 0.8rem; }
+        .close-deco { font-size: 2rem; line-height: 1; cursor: pointer; color: var(--text-sub); }
+
+        nav .mobile-nav-footer { 
+            display: block !important; /* 强制显示 */
+            margin-top: auto; padding: 20px 30px;
+            font-family: var(--font-tech); color: var(--border-bright); font-size: 0.7rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* 列表垂直排列 */
+        nav ul {
+            flex-direction: column;
+            width: 100%; height: auto;
+            gap: 0; align-items: stretch;
+            overflow-y: auto; /* 允许菜单内容滚动 */
+        }
+
+        nav a {
+            flex-direction: row; justify-content: flex-start;
+            padding: 20px 30px; height: auto;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+
+        .nav-cn { font-size: 1.2rem; font-style: normal; margin-bottom: 0; margin-right: 15px; }
+        .nav-en { font-size: 0.9rem; opacity: 0.4; }
+
+        /* 手机端选中状态 (左侧高亮条) */
+        nav a.active {
+            background: linear-gradient(90deg, rgba(255,156,0,0.1), transparent);
+            border-left: 4px solid var(--accent-orange);
+            padding-left: 26px;
+        }
+        nav a.active .nav-cn { color: var(--accent-orange); }
+        nav a.active .nav-en { color: #fff; opacity: 1; }
+
+        /* 移除毛笔 */
+        nav a.active::before, nav a.active::after { display: none; }
+
+        /* 遮罩层 */
+        .mobile-overlay {
+            display: block !important; /* 强制显示结构，通过 opacity 控制显隐 */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1000;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .mobile-overlay.open { opacity: 1; pointer-events: auto; }
+    }
+</style>
+
+<script is:inline>
+    // 移动端菜单逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const menuCloseBtn = document.getElementById('menuCloseBtn'); // 新增的关闭按钮
+        const mainNav = document.getElementById('mainNav');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function toggleMenu() {
+            const isOpen = mainNav.classList.contains('open');
+            if (isOpen) {
+                mainNav.classList.remove('open');
+                menuOverlay.classList.remove('open');
+                menuToggle.classList.remove('open');
+            } else {
+                mainNav.classList.add('open');
+                menuOverlay.classList.add('open');
+                menuToggle.classList.add('open');
+            }
+        }
+
+        if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+        if (menuCloseBtn) menuCloseBtn.addEventListener('click', toggleMenu); // 绑定关闭按钮
+        if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
+
+        // 点击链接后自动关闭
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    mainNav.classList.remove('open');
+                    menuOverlay.classList.remove('open');
+                    menuToggle.classList.remove('open');
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,116 @@
+<footer>
+    <div class="footer-container">
+        <div class="footer-left">
+            <div class="footer-logo-img">PROJECT LOGO</div>
+            <div class="footer-text">
+                <p>幻想乡战术生存游戏《射命丸文的寂静的故乡》<br>由 鵺酱心酱制作委员会 呈现。</p>
+                <p style="margin-top: 15px;">本游戏属于《东方Project》的二次创作同人作品，原为 上海爱丽丝幻乐团(上海アリス幻樂団) 的原创系列作品，其著作权归属该社团及博丽神主ZUN(太田顺也)所有。</p>
+                <p>网站由 MqyGalaxy 制作。如果在本网站方面产生疑问与冲突，请优先通过网站反馈进行协商。</p>
+            </div>
+        </div>
+        <div class="footer-links">
+            <a href="#">关于本站</a>
+            <a href="#">用户协议</a>
+            <a href="#">隐私政策</a>
+            <a href="#">网站反馈</a>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        &copy; 2025 鵺酱心酱制作委员会. SOME RIGHTS RESERVED. <br>
+    </div>
+</footer>
+
+<style>
+    footer {
+        background: var(--bg-panel);
+        border-top: 2px solid var(--accent-orange);
+        padding: 60px 50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+
+    .footer-left {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .footer-logo-img {
+        height: 40px;
+        margin-bottom: 20px;
+        background: var(--accent-orange);
+        width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #000;
+        clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+        font-family: var(--font-header);
+    }
+
+    .footer-text {
+        color: var(--text-sub);
+        font-size: 0.8rem;
+        line-height: 1.6;
+        max-width: 1000px;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: var(--text-main);
+        text-decoration: none;
+        font-family: var(--font-tech);
+        font-size: 1rem;
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .footer-links a:hover {
+        color: var(--accent-orange);
+        text-shadow: 0 0 10px rgba(255,156,0,0.5);
+    }
+
+    .footer-copyright {
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-dim);
+        text-align: center;
+        color: var(--text-sub);
+        font-size: 0.8rem;
+    }
+
+/* ... PE ... */
+
+@media (max-width: 768px) {
+    footer {
+        padding: 40px 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-left {
+        min-width: 100%;
+    }
+
+    .footer-links {
+        flex-direction: column; /* 链接垂直排列，防止误触 */
+        gap: 15px;
+    }
+}
+</style>

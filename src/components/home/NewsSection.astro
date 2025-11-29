@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+
+// 1. 获取所有新闻
+const allNews = await getCollection('news');
+
+// 2. 按日期降序排列
+const sortedNews = allNews.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// 3. 修改：取前 5 条展示
+const recentNews = sortedNews.slice(0, 5);
+---
+
+<div id="news" class="layout-grid">
+    <div class="sidebar">
+        <div class="sidebar-sticky">
+            <span class="section-num">04</span>
+            <div class="hazard-box"></div>
+            <h2 class="section-title-cn">最新<br>情报</h2>
+            <span class="section-title-en">Intelligence</span>
+            <p class="section-desc">
+                来自 139 号避难所终端的加密通讯。<br>
+                包含更新日志与维护公告。
+            </p>
+            <div style="margin-top: 40px; font-family: var(--font-tech); color: var(--border-bright);">/// DATA_STREAM_OPEN</div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="news-list">
+            {recentNews.map((news) => (
+                <a href={`/news/${news.slug}`} class="news-item-link">
+                    <div class="news-item">
+                        <div class="news-main">
+                            <span 
+                                class="news-tag" 
+                                style={news.data.tagColor === 'red' ? 'color: var(--accent-red)' : news.data.tagColor === 'orange' ? 'color: var(--accent-orange)' : 'color: #888'}
+                            >
+                                {news.data.tag}
+                            </span>
+                            <span class="news-title">{news.data.title}</span>
+                        </div>
+                        <span class="news-date">{news.data.date}</span>
+                    </div>
+                </a>
+            ))}
+        </div>
+
+        <div style="margin-top: 40px; text-align: right;">
+            <a href="/news" class="view-all-btn">
+                VIEW FULL ARCHIVE <span style="margin-left: 10px;">→</span>
+            </a>
+        </div>
+
+        <div class="content-deco">SECURE CONNECTION ESTABLISHED</div>
+    </div>
+</div>
+
+<style>
+    /* ... 保留之前的样式 ... */
+    .news-item-link { text-decoration: none; color: inherit; display: block; }
+    .news-item { display: flex; align-items: center; justify-content: space-between; padding: 25px 20px; border-bottom: 1px solid var(--border-dim); transition: 0.3s; cursor: pointer; position: relative; background: linear-gradient(90deg, transparent, transparent); }
+    .news-item:hover { background: linear-gradient(90deg, rgba(255,156,0,0.1), transparent); border-bottom-color: var(--accent-orange); padding-left: 35px; }
+    .news-item::before { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-orange); transform: scaleY(0); transition: 0.3s; }
+    .news-item:hover::before { transform: scaleY(1); }
+    .news-main { display: flex; align-items: center; }
+    .news-tag { font-family: var(--font-tech); background: #222; padding: 2px 0; margin-right: 15px; font-size: 0.8rem; display: inline-block; width: 70px; text-align: center; flex-shrink: 0; }
+    .news-title { font-size: 1.2rem; font-weight: bold; color: var(--text-main); }
+    .news-date { font-family: var(--font-tech); color: var(--text-sub); white-space: nowrap; margin-left: 20px; }
+
+    /* 新增按钮样式 */
+    .view-all-btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background: transparent;
+        border: 1px solid var(--border-bright);
+        color: var(--text-main);
+        font-family: var(--font-tech);
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+        clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    .view-all-btn:hover {
+        background: var(--accent-orange);
+        color: #000;
+        border-color: var(--accent-orange);
+    }
+    /* --- PE --- */
+    @media (max-width: 768px) {
+        /* 1. 调整新闻条目容器 */
+        .news-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;          /* 减小元素间距 */
+            padding: 15px 10px; /* 减小内边距 */
+        }
+
+        /* 2. 调整主内容区 */
+        .news-main {
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        /* 3. 关键优化：将标签和日期放在同一行显示 */
+        /* 我们需要利用 Flexbox 的 order 属性或者重新布局 */
+        /* 这里采用绝对定位或者 Flex 调整来让它们并排 */
+        
+        .news-item {
+            position: relative;
+            padding-top: 35px; /* 给顶部的 Tag 和 Date 留出空间 */
+        }
+
+        .news-tag {
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            margin: 0;
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            width: auto; /* 不再固定宽度，节省空间 */
+            min-width: 60px;
+        }
+
+        .news-date {
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            margin: 0;
+            font-size: 0.75rem; /* 稍微缩小日期 */
+            color: var(--text-sub);
+        }
+
+        /* 4. 标题样式调整 */
+        .news-title {
+            font-size: 1rem; /* 稍微减小标题字号 */
+            line-height: 1.4;
+            margin-top: 5px; /* 与上方标签拉开一点距离 */
+            width: 100%;
+            /* 限制标题行数，防止过长 */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 5. 底部“查看全部”按钮优化 */
+        .view-all-btn {
+            width: 100%;
+            text-align: center;
+            padding: 12px 0;
+            margin-top: 20px;
+        }
+    }
+</style>

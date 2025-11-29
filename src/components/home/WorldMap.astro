@@ -1,0 +1,249 @@
+---
+import { locations } from '../../data/locations';
+
+const locationMap = locations.reduce((acc, loc) => {
+    acc[loc.id] = loc;
+    return acc;
+}, {} as Record<string, typeof locations[0]>);
+---
+
+<div id="world" class="layout-grid">
+    <div class="sidebar">
+        <div class="sidebar-sticky">
+            <span class="section-num">03</span>
+            <div class="hazard-box" style="background: repeating-linear-gradient(45deg, #000, #000 5px, var(--accent-red) 5px, var(--accent-red) 10px);"></div>
+            <h2 class="section-title-cn">异变<br>档案</h2>
+            <span class="section-title-en">Database</span>
+            <p class="section-desc">
+                异变爆发后的半年间，139避难所尽可能地收集了有关异变的机密资料。
+            </p>
+            <div style="margin-top: 40px; font-family: var(--font-tech); color: var(--border-bright);">/// ACCESS_GRANTED</div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="terminal-frame">
+            <div id="mapViewport" class="map-viewport">
+                <div class="grid-overlay" onclick="closeMapPanel()"></div>
+                
+                {locations.map((loc) => (
+                    <div 
+                        class:list={[
+                            'map-pin', 
+                            { 'pin-safe': loc.type === 'safe' },
+                            { 'pin-warning': loc.type === 'warning' },
+                            { 'pin-danger': loc.type === 'danger' }
+                        ]} 
+                        style={`top: ${loc.y}; left: ${loc.x};`}
+                        onclick={`openMapPanel('${loc.id}', this)`}
+                    >
+                        <span>{loc.code}</span>
+                    </div>
+                ))}
+            </div>
+            
+            <div class="map-data-overlay" id="mapPanel">
+                <div class="close-btn" onclick="closeMapPanel()">×</div>
+                <h3 style="font-family: var(--font-header); font-size: 1.5rem; margin-bottom: 20px; color: var(--text-main);">LOCATION INFO</h3>
+                <div class="data-row"><span class="data-label">地点</span><span class="data-value" id="mapName">---</span></div>
+                <div class="data-row"><span class="data-label">等级</span><span class="data-value" id="mapStatus">---</span></div>
+                <div class="data-row"><span class="data-label">威胁</span><span class="data-value" id="mapThreat">---</span></div>
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border-dim);">
+                    <span class="data-label" style="display:block; margin-bottom:10px;">DESCRIPTION</span>
+                    <p id="mapDesc" style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6;">---</p>
+                </div>
+
+                <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #333;">
+                    <button style="width: 100%; padding: 10px; background: var(--accent-orange); border: none; font-weight: bold; cursor: pointer;">ENTER WIKI</button>
+                </div>
+            </div>
+        </div>
+        <div class="content-deco">VAULT 139 SECRET DATABASE - ACCESS HAS BEEN GRANTED</div>
+    </div>
+</div>
+
+<style>
+    .terminal-frame { width: 100%; height: 600px; border: 2px solid var(--border-dim); background: #000; position: relative; overflow: hidden; }
+    
+    .map-viewport { 
+        width: 100%; height: 100%; position: relative; 
+        background-image: url('https://placehold.co/1920x1080/080808/333?text=Map+Schematic');
+        background-size: cover; background-position: center;
+        transition: background-image 0.3s ease-in-out; 
+    }
+    
+    .grid-overlay { position: absolute; inset: 0; background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); pointer-events: auto; cursor: default; z-index: 1; }
+    
+    .map-data-overlay { position: absolute; top: 0; right: 0; width: 350px; height: 100%; background: rgba(10,10,12,0.98); border-left: 3px solid var(--accent-orange); padding: 40px; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: 20; backdrop-filter: blur(5px); }
+    .map-data-overlay.active { transform: translateX(0); }
+    
+    .data-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+    .data-label { color: var(--text-sub); font-family: var(--font-tech); font-size: 0.9rem; }
+    .data-value { color: var(--text-main); font-weight: bold; font-family: var(--font-tech); }
+    
+    .close-btn { position: absolute; top: 15px; right: 15px; color: var(--text-sub); cursor: pointer; font-size: 24px; font-family: var(--font-header); transition: 0.2s; }
+    .close-btn:hover { color: var(--accent-orange); }
+    
+    /* --- 地图点样式 (Pin) --- */
+    .map-pin { 
+        position: absolute; width: 40px; height: 40px; 
+        background: rgba(0,0,0,0.6); 
+        font-weight: bold; cursor: pointer; 
+        display: flex; justify-content: center; align-items: center; 
+        transform: rotate(45deg); transition: 0.3s; 
+        z-index: 10;
+        font-family: var(--font-tech);
+        
+        /* 默认样式 (Fallback / Warning) - 橙色 */
+        border: 2px solid var(--accent-orange);
+        color: var(--accent-orange);
+    }
+    .map-pin span { transform: rotate(-45deg); }
+    
+    /* --- 交互状态：明确指定文字颜色为黑色 --- */
+
+    /* 1. 默认/警告 (橙色) */
+    .map-pin:hover, .map-pin.active,
+    .map-pin.pin-warning:hover, .map-pin.pin-warning.active { 
+        background-color: var(--accent-orange); 
+        color: #000; 
+        box-shadow: 0 0 20px var(--accent-orange); 
+        transform: rotate(45deg) scale(1.1);
+    }
+
+    /* 2. 安全 (绿色) */
+    .map-pin.pin-safe { 
+        border-color: #4ade80; 
+        color: #4ade80; 
+    }
+    .map-pin.pin-safe:hover, .map-pin.pin-safe.active { 
+        background-color: #4ade80; 
+        color: #000; 
+        box-shadow: 0 0 20px #4ade80; 
+    }
+
+    /* 3. 危险 (红色) */
+    .map-pin.pin-danger { 
+        border-color: var(--accent-red); 
+        color: var(--accent-red); 
+    }
+    .map-pin.pin-danger:hover, .map-pin.pin-danger.active { 
+        background-color: var(--accent-red); 
+        color: #000; 
+        box-shadow: 0 0 20px var(--accent-red); 
+    }
+
+    /* --- PE --- */
+    @media (max-width: 768px) {
+        
+        /* 1. 地图容器：增加高度，确保有足够空间显示地图和弹窗 */
+        .terminal-frame {
+            height: 60vh; /* 使用视口高度的 60%，比之前的 400px 更灵活 */
+            min-height: 400px;
+        }
+
+        /* 2. 弹窗面板：限制高度 + 滚动条 */
+        .map-data-overlay {
+            width: 100%;
+            height: auto;        /* 高度由内容决定 */
+            max-height: 60%;     /* 关键：最多只占地图高度的 60%，留出 40% 看地图 */
+            min-height: auto;    /* 取消最小高度限制 */
+            
+            top: auto;           /* 取消顶部定位 */
+            bottom: 0;           /* 紧贴底部 */
+            right: 0;
+            left: 0;
+            
+            border-left: none;
+            border-top: 3px solid var(--accent-orange); /* 改为顶部边框 */
+            
+            transform: translateY(100%);
+            
+            /* 关键：内容过多时显示滚动条 */
+            overflow-y: auto; 
+            
+            padding: 25px 20px; /* 增加一点内边距 */
+            background: rgba(10, 10, 15, 0.98); /* 加深背景色防止透视干扰 */
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8); /* 顶部阴影 */
+        }
+
+        .map-data-overlay.active {
+            transform: translateY(0);
+        }
+
+        /* 3. 关闭按钮：优化位置，防止被内容遮挡 */
+        .close-btn {
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem; /* 稍微放大方便手指点击 */
+            background: rgba(0,0,0,0.5); /* 增加半透明背景 */
+            border-radius: 4px;
+            padding: 0 8px;
+            z-index: 50;
+            position: absolute; /* 保持绝对定位 */
+        }
+
+        /* 4. 地图标记 (Pin)：缩小尺寸 */
+        .map-pin {
+            width: 32px;  /* 从默认的 40px 缩小到 32px */
+            height: 32px;
+            font-size: 0.7rem; /* 字体也相应缩小 */
+            border-width: 1px; /* 边框变细 */
+        }
+        
+        /* 选中状态也按比例缩小 */
+        .map-pin:hover, .map-pin.active {
+            box-shadow: 0 0 10px currentColor; /* 减弱光晕范围 */
+            transform: rotate(45deg) scale(1.1);
+        }
+    }
+</style>
+
+<script is:inline define:vars={{ locationMap }}>
+    const mapData = locationMap;
+    const defaultMapBg = "url('https://placehold.co/1920x1080/080808/333?text=Global+Tactical+Map')";
+
+    window.openMapPanel = function(id, el) {
+        const data = mapData[id];
+        if (!data) return;
+
+        const mapPanel = document.getElementById('mapPanel');
+        const viewport = document.getElementById('mapViewport');
+        if (!mapPanel) return;
+
+        document.getElementById('mapName').innerText = data.name;
+        document.getElementById('mapStatus').innerText = data.status;
+        document.getElementById('mapThreat').innerText = data.threat;
+        document.getElementById('mapDesc').innerText = data.description;
+        
+        const statusEl = document.getElementById('mapStatus');
+        const overlay = document.getElementById('mapPanel');
+        
+        let colorVar = 'var(--accent-orange)';
+        if(data.type === 'safe') colorVar = '#4ade80';
+        else if (data.type === 'danger') colorVar = 'var(--accent-red)';
+        
+        statusEl.style.color = colorVar;
+        overlay.style.borderLeftColor = colorVar;
+        overlay.style.borderTopColor = colorVar;
+        
+        document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
+        if(el) el.classList.add('active');
+
+        if(viewport && data.screenshot) {
+            viewport.style.backgroundImage = `url('${data.screenshot}')`;
+        }
+
+        mapPanel.classList.add('active');
+    }
+
+    window.closeMapPanel = function() {
+        const mapPanel = document.getElementById('mapPanel');
+        const viewport = document.getElementById('mapViewport');
+        
+        if(mapPanel) mapPanel.classList.remove('active');
+        document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
+        
+        if(viewport) viewport.style.backgroundImage = defaultMapBg;
+    }
+</script>
