@@ -1,7 +1,14 @@
+---
+import { Image } from 'astro:assets';
+import staffImage from '../../assets/images/staff.png';
+---
+
 <footer>
     <div class="footer-container">
         <div class="footer-left">
-            <div class="footer-logo-img">PROJECT LOGO</div>
+            <div class="footer-logo-img">
+                <Image src={staffImage} alt="鵺酱心酱制作委员会 Logo" style="height: 100%; width: auto;" />
+            </div>
             <div class="footer-text">
                 <p>幻想乡战术生存游戏《射命丸文的寂静的故乡》<br>由 鵺酱心酱制作委员会 呈现。</p>
                 <p style="margin-top: 15px;">本游戏属于《东方Project》的二次创作同人作品，原为 上海爱丽丝幻乐团(上海アリス幻樂団) 的原创系列作品，其著作权归属该社团及博丽神主ZUN(太田顺也)所有。</p>
@@ -43,17 +50,14 @@
     }
 
     .footer-logo-img {
-        height: 40px;
+        height: 100px;
         margin-bottom: 20px;
-        background: var(--accent-orange);
-        width: 150px;
+        width: auto;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: left;
         font-weight: bold;
-        color: #000;
         clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
-        font-family: var(--font-header);
     }
 
     .footer-text {

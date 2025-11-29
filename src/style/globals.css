@@ -68,20 +68,28 @@ body {
 .content-deco { position: absolute; bottom: 20px; right: 20px; font-family: var(--font-tech); color: var(--border-dim); font-size: 0.8rem; text-align: right; pointer-events: none; }
 
 
-a {
+a:not([class]),
+.prose-container a,
+.footer-text a {
     color: var(--accent-orange);
     text-decoration: none;
     position: relative;
     transition: all 0.3s ease;
+    font-weight: bold;
 }
 
-a:hover {
+a:not([class]):hover,
+.prose-container a:hover,
+.footer-text a:hover {
     color: #fff;
     text-shadow: 0 0 8px var(--accent-orange);
     cursor: pointer;
 }
 
-a::after {
+/* 动态下划线动画 */
+a:not([class])::after,
+.prose-container a::after,
+.footer-text a::after {
     content: '';
     position: absolute;
     left: 0;
@@ -93,22 +101,11 @@ a::after {
     box-shadow: 0 0 4px var(--accent-orange);
 }
 
-a:hover::after {
-    width: 100%; 
-}
-
-
-a.block-link, 
-.news-item-link,
-.archive-item {
-    color: inherit; /* 继承父元素颜色，而不是强制橙色 */
-    text-shadow: none;
-}
-
-a.block-link:hover::after,
-.news-item-link:hover::after,
-.archive-item:hover::after {
-    width: 0; /* 禁用下划线动画 */
+/* 悬停时展开下划线 */
+a:not([class]):hover::after,
+.prose-container a:hover::after,
+.footer-text a:hover::after {
+    width: 100%;
 }
 
 /* --- PE --- */

@@ -2,6 +2,8 @@
 import '../style/theme.css';
 import '../style/globals.css';
 
+import Loading from '../components/ui/Loading.astro';
+
 import '@fontsource/noto-sans-sc/400.css';
 import '@fontsource/noto-sans-sc/700.css';
 import '@fontsource/noto-sans-sc/900.css';
@@ -32,6 +34,7 @@ const { title } = Astro.props;
                 </filter>
             </defs>
         </svg>
+		<Loading />
 
 		<slot />
 	</body>

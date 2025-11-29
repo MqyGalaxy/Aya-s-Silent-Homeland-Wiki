@@ -15,7 +15,7 @@ const locationMap = locations.reduce((acc, loc) => {
             <h2 class="section-title-cn">异变<br>档案</h2>
             <span class="section-title-en">Database</span>
             <p class="section-desc">
-                异变爆发后的半年间，139避难所尽可能地收集了有关异变的机密资料。
+                异变爆发后的半年间，139号避难所尽可能地收集了有关异变的机密资料。
             </p>
             <div style="margin-top: 40px; font-family: var(--font-tech); color: var(--border-bright);">/// ACCESS_GRANTED</div>
         </div>
@@ -67,7 +67,7 @@ const locationMap = locations.reduce((acc, loc) => {
     
     .map-viewport { 
         width: 100%; height: 100%; position: relative; 
-        background-image: url('https://placehold.co/1920x1080/080808/333?text=Map+Schematic');
+        background-image: url('');
         background-size: cover; background-position: center;
         transition: background-image 0.3s ease-in-out; 
     }
@@ -201,7 +201,7 @@ const locationMap = locations.reduce((acc, loc) => {
 
 <script is:inline define:vars={{ locationMap }}>
     const mapData = locationMap;
-    const defaultMapBg = "url('https://placehold.co/1920x1080/080808/333?text=Global+Tactical+Map')";
+    const defaultMapBg = "url('')";
 
     window.openMapPanel = function(id, el) {
         const data = mapData[id];

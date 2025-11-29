@@ -1,0 +1,211 @@
+<div id="loading-screen" class="loader-container">
+    <div class="loader-grid"></div>
+    
+    <div class="loader-content">
+        <div class="loader-logo">
+            <div class="diamond-outer"></div>
+            <div class="diamond-inner"></div>
+        </div>
+        
+        <div class="loader-text">
+            <span class="text-main">INITIALIZING</span>
+            <span class="text-dots">...</span>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="system-data">
+            <span id="loadingPercent">0%</span>
+            <span class="data-label">/// MEMORY_CHECK_OK</span>
+        </div>
+    </div>
+
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+</div>
+
+<style>
+    /* --- 容器样式 --- */
+    .loader-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-color: #050505;
+        z-index: 9999; /* 最高层级 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+    }
+
+    /* 背景微弱网格 */
+    .loader-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+    }
+
+    /* --- 中心 Logo (菱形动画) --- */
+    .loader-logo {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .diamond-outer {
+        position: absolute;
+        width: 100%; height: 100%;
+        border: 2px solid var(--accent-orange);
+        transform: rotate(45deg);
+        animation: pulse-border 2s infinite;
+    }
+
+    .diamond-inner {
+        position: absolute;
+        width: 60%; height: 60%;
+        background-color: var(--accent-orange);
+        transform: rotate(45deg);
+        animation: spin-inner 3s infinite ease-in-out alternate;
+    }
+
+    /* --- 进度条与文字 --- */
+    .loader-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+        z-index: 2;
+    }
+
+    .loader-text {
+        font-family: var(--font-header);
+        font-size: 1.5rem;
+        letter-spacing: 4px;
+        color: #fff;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .text-dots {
+        animation: blink 1s infinite;
+    }
+
+    .progress-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        width: 0%;
+        height: 100%;
+        background: var(--accent-orange);
+        position: absolute;
+        top: 0; left: 0;
+        /* 关键：添加阴影制造发光感 */
+        box-shadow: 0 0 10px var(--accent-orange); 
+        transition: width 0.2s linear;
+    }
+
+    .system-data {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        font-family: var(--font-tech);
+        font-size: 0.8rem;
+        color: var(--accent-orange);
+    }
+
+    /* --- 角落装饰 --- */
+    .corner {
+        position: absolute;
+        width: 30px; height: 30px;
+        border: 2px solid rgba(255,255,255,0.2);
+    }
+    .tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    /* --- 动画定义 --- */
+    @keyframes pulse-border {
+        0%, 100% { transform: rotate(45deg) scale(1); opacity: 1; }
+        50% { transform: rotate(45deg) scale(1.1); opacity: 0.5; }
+    }
+
+    @keyframes spin-inner {
+        0% { transform: rotate(45deg) scale(0.8); }
+        100% { transform: rotate(225deg) scale(1); }
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+
+    /* --- 消失动画 (JS添加类名后触发) --- */
+    .loader-hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(1.05); /* 稍微放大淡出 */
+    }
+</style>
+
+<script>
+    // 模拟加载进度的脚本
+    const loader = document.getElementById('loading-screen');
+    const bar = document.getElementById('progressBar');
+    const percentText = document.getElementById('loadingPercent');
+
+    // 模拟资源加载过程 (非线性进度)
+    let progress = 0;
+    const totalDuration = 2000; // 至少显示2秒
+    const interval = 30; 
+
+    const timer = setInterval(() => {
+        // 随机增加进度，模拟网络波动
+        const increment = Math.random() * 5; 
+        progress = Math.min(progress + increment, 100);
+        
+        if (bar && percentText) {
+            bar.style.width = `${progress}%`;
+            percentText.innerText = `${Math.floor(progress)}%`;
+        }
+
+        // 加载完成
+        if (progress >= 100) {
+            clearInterval(timer);
+            setTimeout(() => {
+                if (loader) {
+                    loader.classList.add('loader-hidden');
+                    // 动画结束后彻底移除元素，释放资源
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 500);
+                }
+            }, 200); // 100% 后稍微停顿一下
+        }
+    }, interval);
+
+    // 兜底：如果页面真实加载特别快/特别慢，确保 window.onload 也能触发关闭
+    window.addEventListener('load', () => {
+        // 如果上面模拟进度还没跑完，这里可以加速跑完，或者直接关闭
+        // 目前逻辑是以模拟动画为主，保证视觉效果
+    });
+</script>
