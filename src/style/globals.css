@@ -160,7 +160,7 @@ html {
     max-width: 100%;      /* 限制最大宽度，防止撑破屏幕 */
     height: auto;         /* 高度自适应 */
     display: block;       /* 独占一行 */
-    margin: 30px 0 10px 0; /* 上下留白 */
+    margin: 30px auto; 
     
     /* 战术边框 */
     border: 1px solid var(--border-dim);

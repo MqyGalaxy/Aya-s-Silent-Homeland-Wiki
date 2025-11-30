@@ -3,7 +3,7 @@ title: "如何安装寂静的故乡"
 category: "TUTORIAL"
 id_code: "INSTALL-01"
 description: "游戏安装教程"
-cover: ""
+cover: "/src/assets/images/game_cover.jpg"
 ---
 
 ## 01. 前置需求
@@ -39,7 +39,9 @@ cover: ""
 ![download](../../../assets/images/wiki/turtorial/install-tutorial/zip-img.png)
 *图 1: 压缩文件*
 
-标有 `z01`、`z02` 等文件均为压缩包的**分卷**，而标记了 `zip` 格式的文件才是我们需要点击操作的压缩包本体。通过右键并选择您拥有的压缩文件解压。
+标有 `z01`、`z02` 等文件均为压缩包的**分卷**，而标记了 `zip` 格式的文件才是我们需要点击操作的压缩包本体。通过右键并选择您拥有的解压工具解压这个压缩包本体。
+
+**解压时请注意**：压缩包本体必须和其他所有压缩包分卷在同一个文件夹目录当中！
 
 ## 04. 启动游戏
 

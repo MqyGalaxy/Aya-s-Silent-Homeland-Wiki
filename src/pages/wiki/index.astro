@@ -6,7 +6,7 @@ import Footer from '../../components/layout/Footer.astro';
 
 // 1. 获取数据
 const allWiki = await getCollection('wiki');
-const randomPicks = allWiki.sort(() => 0.5 - Math.random()).slice(0, 3);
+const randomPicks = allWiki.sort(() => 0.5 - Math.random()).slice(0, 6);
 
 // 2. 构建轻量级搜索索引 (传给前端 JS 使用)
 const searchIndex = allWiki.map(item => ({
@@ -20,6 +20,7 @@ const searchIndex = allWiki.map(item => ({
 const categories = [
     { id: 'CHARACTER', label: '人物档案', code: 'OP' },
     { id: 'WEAPON', label: '武器库', code: 'WP' },
+    { id: 'LOCATION', label: '战区', code: 'LT' },
     { id: 'ITEM', label: '物资道具', code: 'IT' },
     { id: 'STORY', label: '剧情记录', code: 'ST' },
     { id: 'TUTORIAL', label: '教程', code: 'TU' },

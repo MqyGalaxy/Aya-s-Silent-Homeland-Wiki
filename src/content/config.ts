@@ -16,11 +16,12 @@ const wikiCollection = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
-        category: z.enum(['CHARACTER', 'WEAPON', 'ITEM', 'STORY', 'TUTORIAL']), // 文章分类
+        category: z.enum(['CHARACTER', 'WEAPON', 'ITEM', 'STORY', 'TUTORIAL', 'LOCATION']), // 文章分类
         description: z.string().optional(),
         cover: z.string().optional(), // 封面图/缩略图
 
         roleType: z.enum(['PLAYABLE', 'NPC', 'BOSS']).optional(),
+        locationType: z.enum(['DEPLOYABLE', 'SAFE', 'CAUTION', 'WARNING', 'DANGER']).optional(),
         
         // --- 可选字段 (针对特定类型) ---
         // 角色/武器属性
@@ -31,6 +32,11 @@ const wikiCollection = defineCollection({
             damage: z.string().optional(),
             fireRate: z.string().optional(),
             accuracy: z.string().optional(),
+        }).optional(),
+        // 地图专用
+        locaInfo: z.object({
+            status: z.string().optional(),
+            threat: z.string().optional(),
         }).optional(),
     }),
 });

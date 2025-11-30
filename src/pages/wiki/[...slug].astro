@@ -23,6 +23,16 @@ const getRoleTypeInfo = (type: string) => {
     }
 };
 
+const getLocaTypeInfo = (type: string) => {
+    switch (type) {
+        case 'SAFE': return { color: '#4ade80'}; // 绿色
+        case 'CAUTION': return { color: '#facc15'}; // 绿色
+        case 'WARNING': return { color: '#ff9c00'};    // 橙色
+        case 'DANGER': return { color: '#c91a1a'};    // 红色
+        default: return { color: '#888'};
+    }
+};
+
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
@@ -102,6 +112,18 @@ const getRarityColor = (r) => {
                                     <div class="data-row">
                                         <span class="key">准确性</span>
                                         <span class="value">{entry.data.stats.accuracy}</span>
+                                    </div>
+                                </>
+                            )}
+                            {entry.data.category === 'LOCATION' && entry.data.locaInfo && (
+                                <>
+                                    <div class="data-row">
+                                        <span class="key">等级</span>
+                                        <span class="value" style={`color: ${getLocaTypeInfo(entry.data.locaInfo.status).color};`}>{entry.data.locaInfo.status}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="key">威胁</span>
+                                        <span class="value">{entry.data.locaInfo.threat}</span>
                                     </div>
                                 </>
                             )}
@@ -324,8 +346,7 @@ const getRarityColor = (r) => {
         /* 关键：让容器宽度自动收缩以适应内容(图片) */
         width: fit-content;
         max-width: 100%;
-        /* 居中显示 */
-        margin: 30px auto; 
+        margin: 0; 
         display: flex;
         flex-direction: column;
         align-items: center;
