@@ -22,7 +22,7 @@ export const locations: MapLocation[] = [
         code: '博丽', 
         status: 'CAUTION',
         threat: '低',
-        description: '曾经是幻想乡的巫女——博丽灵梦的住所。这位解决了幻想乡诸多异变的传奇，却在这一次异变中不知去向。尽管我们并没有在这里找到她，但神社确实一个不错的前哨基地选址。',
+        description: '曾经是幻想乡的巫女——博丽灵梦的住所。这位解决了幻想乡诸多异变的传奇，却在这一次异变中不知去向。尽管我们并没有在这里找到她，但神社确实一个不错的野外营地选址。',
         screenshot: reimuShrineImg.src,
         x: '81.5%',
         y: '41%',

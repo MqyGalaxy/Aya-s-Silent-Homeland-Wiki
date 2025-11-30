@@ -3,7 +3,7 @@ title: "博丽神社"
 category: "LOCATION"
 id_code: "LOCATION-02"
 locationType: "DEPLOYABLE"
-description: "可部署前哨基地"
+description: "可部署野外营地"
 cover: "../../../assets/images/game/博丽神社.png"
 locaInfo:
   status: "CAUTION"
@@ -16,4 +16,4 @@ locaInfo:
 
 但可惜的是，到达此处后除了一座荒废已久的神社和少数尸变体，我们并没有在这里发现她的任何踪迹。但特遣队员们在此得到了一个不可靠消息——博丽灵梦已经前往了异变中心“鬼犄”。
 
-尽管我们并没有在这里找到她，但神社确实一个不错的前哨基地选址。
+尽管我们并没有在这里找到她，但神社确实一个不错的野外营地选址。
