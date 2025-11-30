@@ -186,7 +186,20 @@ const locationMap = locations.reduce((acc, loc) => {
     .br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
     
     /* 数据面板保持不变 */
-    .map-data-overlay { position: absolute; top: 0; right: 0; width: 350px; height: 100%; background: rgba(10,10,12,0.98); border-left: 3px solid var(--accent-orange); padding: 40px; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: 20; backdrop-filter: blur(5px); }
+    .map-data-overlay { 
+        position: absolute; 
+        top: 0; right: 0; 
+        width: 350px; 
+        height: 100%; 
+        background: rgba(10,10,12,0.98); 
+        border-left: 3px solid var(--accent-orange); 
+        padding: 40px; 
+        display: flex; flex-direction: column; 
+        transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        z-index: 20; backdrop-filter: blur(5px);
+        overflow-y: auto;
+        touch-action: pan-y;
+    }
     .map-data-overlay.active { transform: translateX(0); }
     
     .data-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
@@ -236,6 +249,7 @@ const locationMap = locations.reduce((acc, loc) => {
             -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
             padding: 25px 20px; background: rgba(10, 10, 15, 0.98); 
             box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+            touch-action: pan-y;
         }
         .map-data-overlay.active { transform: translateY(0); }
         .close-btn { top: 10px; right: 15px; font-size: 1.8rem; background: rgba(0,0,0,0.5); border-radius: 4px; padding: 0 8px; z-index: 50; }
@@ -342,7 +356,9 @@ const locationMap = locations.reduce((acc, loc) => {
 
         // 2. 触摸事件 (Mobile) - 新增的关键部分
         container.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) { // 单指拖动
+            if (e.target.closest('.map-data-overlay')) return;
+
+            if (e.touches.length === 1) { 
                 const touch = e.touches[0];
                 onDragStart(touch.clientX, touch.clientY);
             }
