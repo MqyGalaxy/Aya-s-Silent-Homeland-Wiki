@@ -3,6 +3,8 @@ import { locations } from '../../data/locations';
 // 建议：如果图片在 src/assets 下，使用 import 引入更稳定；如果直接用字符串路径请确保有效
 // import mapBgImg from '../../assets/images/game/世界地图.png'; 
 
+import mapImg from '../../assets/images/game/世界地图.png';
+
 const locationMap = locations.reduce((acc, loc) => {
     acc[loc.id] = loc;
     return acc;
@@ -87,7 +89,7 @@ const locationMap = locations.reduce((acc, loc) => {
     </div>
 </div>
 
-<style>
+<style define:vars={{ bgUrl: `url("${mapImg.src}")` }}>
     /* 容器：作为窗口，隐藏溢出内容 */
     .terminal-frame { 
         width: 100%; 
@@ -127,7 +129,7 @@ const locationMap = locations.reduce((acc, loc) => {
         height: 1654px; 
         position: absolute; 
         
-        background-image: url('/src/assets/images/game/世界地图.png');
+        background-image: var(--bgUrl);
         background-size: 100% 100%; 
         background-position: center;
         transition: filter 0.5s ease; 
