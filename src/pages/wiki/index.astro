@@ -529,7 +529,7 @@ const categories = [
         // 生成 HTML
         const html = picks.map(item => `
             <a href="/wiki/${item.slug}" class="wiki-item">
-                <div class="wiki-thumb" style="background-image: url(${item.cover})"></div>
+                <div class="wiki-thumb" style="background-image: url(${item.cover.src})"></div>
                 <div class="wiki-info">
                     <div class="wiki-meta">
                         <span class="wiki-tag">${item.category}</span>

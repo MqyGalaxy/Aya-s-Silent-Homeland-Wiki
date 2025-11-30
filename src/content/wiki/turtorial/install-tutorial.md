@@ -3,7 +3,7 @@ title: "如何安装寂静的故乡"
 category: "TUTORIAL"
 id_code: "INSTALL-01"
 description: "游戏安装教程"
-cover: "/src/assets/images/game_cover.jpg"
+cover: "../../../assets/images/game_cover.jpg"
 ---
 
 ## 01. 前置需求

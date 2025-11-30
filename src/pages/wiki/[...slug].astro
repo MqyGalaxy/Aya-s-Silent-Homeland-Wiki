@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/layout/Header.astro';
 import Footer from '../../components/layout/Footer.astro';
@@ -75,7 +76,11 @@ const getRarityColor = (r) => {
                     <aside class="meta-panel">
                         <div class="meta-cover">
                             {entry.data.cover ? (
-                                <img src={entry.data.cover} alt={entry.data.title} />
+                                <Image 
+                                    src={entry.data.cover} 
+                                    alt={entry.data.title} 
+                                    class="cover-img"
+                                />
                             ) : (
                                 <div class="no-img">NO IMAGE</div>
                             )}
@@ -221,7 +226,7 @@ const getRarityColor = (r) => {
         position: relative; display: flex; align-items: center; justify-content: center;
         overflow: hidden; /* 确保标签不溢出 */
     }
-    .meta-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .meta-cover .cover-img { width: 100%; height: 100%; object-fit: cover; }
     .no-img { font-family: var(--font-tech); color: #333; }
     
     /* 覆盖在图片上的稀有度 */

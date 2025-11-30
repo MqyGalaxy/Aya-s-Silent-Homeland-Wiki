@@ -14,11 +14,11 @@ const newsCollection = defineCollection({
 
 const wikiCollection = defineCollection({
     type: 'content',
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         category: z.enum(['CHARACTER', 'WEAPON', 'ITEM', 'STORY', 'TUTORIAL', 'LOCATION']), // 文章分类
         description: z.string().optional(),
-        cover: z.string().optional(), // 封面图/缩略图
+        cover: image().optional(), // 封面图/缩略图
 
         roleType: z.enum(['PLAYABLE', 'NPC', 'BOSS']).optional(),
         locationType: z.enum(['DEPLOYABLE', 'SAFE', 'CAUTION', 'WARNING', 'DANGER']).optional(),

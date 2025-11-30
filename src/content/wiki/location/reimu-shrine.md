@@ -4,7 +4,7 @@ category: "LOCATION"
 id_code: "LOCATION-02"
 locationType: "DEPLOYABLE"
 description: "前哨基地"
-cover: "/src/assets/images/game/博丽神社.png"
+cover: "../../../assets/images/game/博丽神社.png"
 locaInfo:
   status: "CAUTION"
   threat: "低"
