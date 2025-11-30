@@ -13,10 +13,10 @@ assignees: ""
 - [ ] STORY (剧情记录)
 - [ ] TUTORIAL (战术教程)
 
-### 🆔 基础信息 (Metadata)
+### 基础信息 (Metadata)
 * **名称 (title)**: 
-* **稀有度 (如果是道具。非道具为空)**: [1-5]
-* **角色类型 (roleType)**: [PLAYABLE / NPC / BOSS] (仅角色填写)
+* **稀有度**: (如果是道具。非道具为空)
+* **角色类型 (roleType)**: [自机PLAYABLE / NPC / BOSS] (仅角色填写)
 
 ### 战术参数 (Stats - 仅武器/角色填写)
 * **火力 (Damage)**: 
