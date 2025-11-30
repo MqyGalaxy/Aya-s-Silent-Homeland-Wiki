@@ -9,6 +9,7 @@ assignees: ""
 ### 归档分类 (Category)
 - [ ] CHARACTER (人物档案)
 - [ ] WEAPON (武器)
+- [ ] LOCATION (地域)
 - [ ] ITEM (物资道具)
 - [ ] STORY (剧情记录)
 - [ ] TUTORIAL (战术教程)
@@ -18,11 +19,16 @@ assignees: ""
 * **稀有度**: (如果是道具。非道具为空)
 * **角色类型 (roleType)**: [自机PLAYABLE / NPC / BOSS] (仅角色填写)
 
-### 战术参数 (Stats - 仅武器/角色填写)
-* **火力 (Damage)**: 
-* **机动/射速 (FireRate)**: 
-* **防御/精度 (Accuracy)**: 
-* **战术 (Tactics)**: 
+### 战术参数 (Stats - 仅角色填写)
+* **火力**: 
+* **机动/射速**: 
+* **防御/精度**: 
+* **战术**: 
+
+### 战术参数 (Stats - 仅武器填写)
+* **伤害**: 
+* **射速**: 
+* **精度**:  
 
 ### 档案正文 (Description & Body)
 请使用markdown格式填写内容，详情查阅填写教程。
