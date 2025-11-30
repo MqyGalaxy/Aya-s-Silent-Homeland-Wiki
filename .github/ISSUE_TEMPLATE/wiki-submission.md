@@ -2,7 +2,7 @@
 name: 📝 Wiki 投稿 / Content Submission
 about: 提交新的角色、武器、道具或剧情档案
 title: "[Wiki投稿] 条目名称"
-labels: ["content", "wiki"]
+labels: ["提交wiki文章 / Wiki Content Submission"]
 assignees: ""
 ---
 
