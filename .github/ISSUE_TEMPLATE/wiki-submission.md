@@ -6,7 +6,7 @@ labels: ["content", "wiki"]
 assignees: ""
 ---
 
-### 📂 归档分类 (Category)
+### 归档分类 (Category)
 - [ ] CHARACTER (人物档案)
 - [ ] WEAPON (武器)
 - [ ] ITEM (物资道具)
@@ -18,13 +18,13 @@ assignees: ""
 * **稀有度 (如果是道具。非道具为空)**: [1-5]
 * **角色类型 (roleType)**: [PLAYABLE / NPC / BOSS] (仅角色填写)
 
-### 📊 战术参数 (Stats - 仅武器/角色填写)
+### 战术参数 (Stats - 仅武器/角色填写)
 * **火力 (Damage)**: 
 * **机动/射速 (FireRate)**: 
 * **防御/精度 (Accuracy)**: 
 * **战术 (Tactics)**: 
 
-### 📝 档案正文 (Description & Body)
+### 档案正文 (Description & Body)
 请使用markdown格式填写内容，详情查阅填写教程。
 
 ```markdown
