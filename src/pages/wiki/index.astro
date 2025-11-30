@@ -6,7 +6,14 @@ import Footer from '../../components/layout/Footer.astro';
 
 // 1. 获取数据
 const allWiki = await getCollection('wiki');
-const randomPicks = allWiki.sort(() => 0.5 - Math.random()).slice(0, 6);
+const fullWikiData = allWiki.map(item => ({
+    title: item.data.title,
+    category: item.data.category,
+    id_code: item.data.id_code || 'N/A',
+    slug: item.slug,
+    desc: item.data.description || '',
+    cover: item.data.cover || 'https://placehold.co/200x200/222/333?text=NO+IMG'
+}));
 
 // 2. 构建轻量级搜索索引 (传给前端 JS 使用)
 const searchIndex = allWiki.map(item => ({
@@ -67,20 +74,8 @@ const categories = [
 
             <section class="featured-section">
                 <div class="section-label">/// RANDOM ACCESS MEMORY</div>
-                <div class="wiki-list">
-                    {randomPicks.map(item => (
-                        <a href={`/wiki/${item.slug}`} class="wiki-item">
-                            <div class="wiki-thumb" style={`background-image: url(${item.data.cover || 'https://placehold.co/200x200/222/333?text=NO+IMG'})`}></div>
-                            <div class="wiki-info">
-                                <div class="wiki-meta">
-                                    <span class="wiki-tag">{item.data.category}</span>
-                                    {item.data.id_code && <span class="wiki-id">{item.data.id_code}</span>}
-                                </div>
-                                <h3 class="wiki-name">{item.data.title}</h3>
-                                <p class="wiki-desc">{item.data.description}</p>
-                            </div>
-                        </a>
-                    ))}
+                <div id="randomWikiContainer" class="wiki-list">
+                    <div style="color: #666; padding: 20px;">LOADING DATA...</div>
                 </div>
             </section>
         </div>
@@ -266,16 +261,16 @@ const categories = [
     .cat-count { font-family: var(--font-tech); font-size: 0.9rem; color: var(--accent-orange); background: rgba(255,156,0,0.1); padding: 2px 10px; border-radius: 2px; }
 
     .wiki-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-    .wiki-item { display: flex; background: var(--bg-panel); border: 1px solid var(--border-dim); height: 140px; text-decoration: none; transition: 0.3s; overflow: hidden; }
-    .wiki-item:hover { border-color: var(--accent-orange); transform: translateX(5px); }
-    .wiki-thumb { width: 120px; background-size: cover; background-position: center; border-right: 1px solid var(--border-dim); position: relative; }
-    .wiki-thumb::after { content:''; position:absolute; inset:0; background:linear-gradient(to right, transparent 50%, rgba(0,0,0,0.8)); }
-    .wiki-info { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .wiki-meta { font-family: var(--font-tech); font-size: 0.7rem; margin-bottom: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-    .wiki-tag { color: var(--accent-orange); }
-    .wiki-id { color: var(--text-sub); }
-    .wiki-name { font-size: 1.2rem; font-weight: bold; color: var(--text-main); margin-bottom: 5px; }
-    .wiki-desc { font-size: 0.8rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    :global(.wiki-item) { display: flex; background: var(--bg-panel); border: 1px solid var(--border-dim); height: 120px; text-decoration: none; transition: 0.3s; overflow: hidden; }
+    :global(.wiki-item:hover) { border-color: var(--accent-orange); transform: translateX(5px); }
+    :global(.wiki-thumb) { width: 120px; background-size: cover; background-position: center; border-right: 1px solid var(--border-dim); position: relative; }
+    :global(.wiki-thumb::after) { content:''; position:absolute; inset:0; background:linear-gradient(to right, transparent 50%, rgba(0,0,0,0.8)); }
+    :global(.wiki-info) { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    :global(.wiki-meta) { font-family: var(--font-tech); font-size: 0.7rem; margin-bottom: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+    :global(.wiki-tag) { color: var(--accent-orange); }
+    :global(.wiki-id) { color: var(--text-sub); }
+    :global(.wiki-name) { font-size: 1.2rem; font-weight: bold; color: var(--text-main); margin-bottom: 5px; }
+    :global(.wiki-desc) { font-size: 0.8rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* --- 搜索容器 --- */
     .search-container { position: relative; width: 100%; }
@@ -478,4 +473,74 @@ const categories = [
             dropdown.classList.add('show');
         }
     });
+</script>
+<script is:inline define:vars={{ fullWikiData }}>
+    // 1. 搜索逻辑
+    const input = document.getElementById('wikiSearchInput');
+    const dropdown = document.getElementById('searchDropdown');
+    const searchIndex = fullWikiData; // 复用数据
+
+    input.addEventListener('input', (e) => {
+        const term = e.target.value.trim().toLowerCase();
+        if (term.length === 0) {
+            dropdown.classList.remove('show');
+            return;
+        }
+
+        const results = searchIndex.filter(item => {
+            return (
+                item.title.toLowerCase().includes(term) || 
+                item.id_code.toLowerCase().includes(term)
+            );
+        }).slice(0, 8);
+
+        if (results.length > 0) {
+            dropdown.innerHTML = results.map(item => `
+                <a href="/wiki/${item.slug}" class="result-item">
+                    <span class="res-title">${item.title}</span>
+                    <span class="res-meta">${item.id_code} // ${item.category}</span>
+                </a>
+            `).join('');
+        } else {
+            dropdown.innerHTML = `<div class="no-result">NO MATCHING DATA FOUND</div>`;
+        }
+        dropdown.classList.add('show');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    input.addEventListener('focus', () => {
+        if (input.value.trim().length > 0) dropdown.classList.add('show');
+    });
+
+    // 2. 随机推荐逻辑 (Client-Side)
+    const randomContainer = document.getElementById('randomWikiContainer');
+    
+    if (randomContainer && fullWikiData.length > 0) {
+        // 随机打乱数组
+        const shuffled = [...fullWikiData].sort(() => 0.5 - Math.random());
+        // 取前 3 个
+        const picks = shuffled.slice(0, 6);
+        
+        // 生成 HTML
+        const html = picks.map(item => `
+            <a href="/wiki/${item.slug}" class="wiki-item">
+                <div class="wiki-thumb" style="background-image: url(${item.cover})"></div>
+                <div class="wiki-info">
+                    <div class="wiki-meta">
+                        <span class="wiki-tag">${item.category}</span>
+                        ${item.id_code ? `<span class="wiki-id">${item.id_code}</span>` : ''}
+                    </div>
+                    <h3 class="wiki-name">${item.title}</h3>
+                    <p class="wiki-desc">${item.desc}</p>
+                </div>
+            </a>
+        `).join('');
+        
+        randomContainer.innerHTML = html;
+    }
 </script>
