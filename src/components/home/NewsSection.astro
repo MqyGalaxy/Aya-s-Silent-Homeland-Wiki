@@ -47,7 +47,7 @@ const recentNews = sortedNews.slice(0, 5);
 
         <div style="margin-top: 40px; text-align: right;">
             <a href="/news" class="view-all-btn">
-                VIEW FULL ARCHIVE <span style="margin-left: 10px;">→</span>
+                访问资讯中心 <span style="margin-left: 10px;">→</span>
             </a>
         </div>
 
@@ -67,24 +67,6 @@ const recentNews = sortedNews.slice(0, 5);
     .news-title { font-size: 1.2rem; font-weight: bold; color: var(--text-main); }
     .news-date { font-family: var(--font-tech); color: var(--text-sub); white-space: nowrap; margin-left: 20px; }
 
-    /* 新增按钮样式 */
-    .view-all-btn {
-        display: inline-block;
-        padding: 15px 40px;
-        background: transparent;
-        border: 1px solid var(--border-bright);
-        color: var(--text-main);
-        font-family: var(--font-tech);
-        text-decoration: none;
-        font-weight: bold;
-        transition: 0.3s;
-        clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-    }
-    .view-all-btn:hover {
-        background: var(--accent-orange);
-        color: #000;
-        border-color: var(--accent-orange);
-    }
     /* --- PE --- */
     @media (max-width: 768px) {
         /* 1. 调整新闻条目容器 */

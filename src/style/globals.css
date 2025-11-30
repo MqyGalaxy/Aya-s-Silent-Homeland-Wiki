@@ -206,6 +206,25 @@ html {
     margin-bottom: 15px;
 }
 
+/* 新增按钮样式 */
+.view-all-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--text-main);
+    font-family: var(--font-tech);
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.view-all-btn:hover {
+    background: var(--accent-orange);
+    color: #000;
+    border-color: var(--accent-orange);
+}
+
 /* --- PE --- */
 @media (max-width: 768px) {
     /* 1. 布局改为单列堆叠 */

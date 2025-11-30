@@ -6,7 +6,7 @@ import { characters } from '../../data/characters';
     <div class="sidebar">
         <div class="sidebar-sticky">
             <span class="section-num">02</span>
-            <div class="hazard-box" style="background: repeating-linear-gradient(45deg, #000, #000 5px, var(--accent-red) 5px, var(--accent-red) 10px);"></div>
+            <div class="hazard-box" style="background: repeating-linear-gradient(45deg, #000, #000 5px, var(--accent-orange) 5px, var(--accent-orange) 10px);"></div>
             <h2 class="section-title-cn">特勤<br>队员</h2>
             <span class="section-title-en">Operators</span>
             <p class="section-desc">139号避难所仅剩的战斗人员所组成的特遣敢死部队。</p>
@@ -33,7 +33,7 @@ import { characters } from '../../data/characters';
     .char-card { height: 500px; background: #0e0e10; border: 2px solid var(--border-dim); position: relative; transition: 0.3s; overflow: hidden; clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 0 100%); cursor: pointer; }
     .char-card:hover { border-color: var(--accent-orange); transform: translateY(-10px); }
     .char-card:hover .char-img { transform: scale(1.05); filter: grayscale(0); }
-    .char-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
+    .char-img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: grayscale(100%); transition: 0.5s; }
     .char-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, #000 0%, transparent 100%); border-top: 1px solid rgba(255,255,255,0.1); }
     .char-class { color: var(--accent-orange); font-family: var(--font-tech); font-size: 0.9rem; margin-bottom: 5px; }
     .char-name { font-size: 1.8rem; font-weight: 900; font-style: italic; text-transform: uppercase; }

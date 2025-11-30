@@ -18,6 +18,6 @@ export interface MapLocation {
     screenshot: string;   // 背景图
     x: string;            // 坐标 x
     y: string;            // 坐标 y
-    type: 'safe' | 'warning' | 'danger'; // 决定颜色的字段
+    type: 'safe' | 'caution' | 'warning' | 'danger'; // 决定颜色的字段
     code: string;
 }
