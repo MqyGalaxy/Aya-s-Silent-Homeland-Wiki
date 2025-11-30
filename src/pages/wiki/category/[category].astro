@@ -5,6 +5,9 @@ import Header from '../../../components/layout/Header.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import WikiSidebar from '../../../components/wiki/WikiSidebar.astro';
 
+
+import noImg from '../../../assets/images/no_img.svg';
+
 export async function getStaticPaths() {
   const allWiki = await getCollection('wiki');
   // 获取所有不重复的分类
@@ -61,7 +64,7 @@ const getRarityColor = (r) => {
                     {sortedItems.map((item) => (
                         <a href={`/wiki/${item.slug}`} class="wiki-card">
                             <div class="card-visual">
-                                <div class="card-img" style={`background-image: url(${item.data.cover || 'https://via.placeholder.com/300'})`}></div>
+                                <div class="card-img" style={`background-image: url(${item.data.cover ? item.data.cover.src : noImg.src})`}></div>
                                 <div class="card-overlay"></div>
                                 {item.data.id_code && <span class="card-id">{item.data.id_code}</span>}
                             </div>
