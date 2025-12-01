@@ -27,7 +27,7 @@ const { page } = Astro.props;
 const { tag } = Astro.params; // 获取当前 URL 中的 tag (例如 "SYSTEM")
 ---
 
-<Layout title={`${tag} Archive - Silent Homeland`}>
+<Layout title={`${tag} Archive - 资讯中心 - 射命丸文的寂静的故乡 / Shameimaru Aya's Silent Homeland`}>
     <Header />
 
     <main class="news-archive-page">
@@ -80,7 +80,7 @@ const { tag } = Astro.params; // 获取当前 URL 中的 tag (例如 "SYSTEM")
 
 <style>
     .news-archive-page { min-height: 100vh; padding-top: 90px; }
-    .archive-banner { height: 200px; background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url('https://placehold.co/1920x400/222/000?text=ARCHIVE+HEADER') center/cover; display: flex; flex-direction: column; justify-content: center; padding-left: 10vw; border-bottom: 1px solid var(--border-dim); }
+    .archive-banner { height: 200px; background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url('../../../../assets/images/game/news_cover.png') center/cover; display: flex; flex-direction: column; justify-content: center; padding-left: 10vw; border-bottom: 1px solid var(--border-dim); }
     .archive-title { font-family: var(--font-header); font-size: 4rem; color: var(--text-main); line-height: 1; }
     .archive-subtitle { font-family: var(--font-tech); color: var(--accent-orange); font-size: 1.2rem; letter-spacing: 2px; margin-top: 10px; }
     
